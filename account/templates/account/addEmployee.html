@@ -1,0 +1,16 @@
+{% extends 'base-box.html' %}
+
+
+
+        {% block text_head %}
+            เพิ่มพนักงาน
+        {% endblock text_head %}
+
+        {% block table %}
+            <form action="{% url 'addEmployee' %}" method='POST'>
+                {%csrf_token%}
+                {{form}}
+
+                <input type="submit" value="เพิ่มพนักงาน">
+            </form>
+        {% endblock table %}

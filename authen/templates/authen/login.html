@@ -1,0 +1,23 @@
+{% extends 'authen.html' %}
+{% block login %}
+<div class="container-fluid h-100">
+        <div class="row justify-content-center align-items-center h-100">
+            <div class="col col-sm-6 col-md-6 col-lg-4 col-xl-3">
+                
+                <form action="{%url 'login'%}" method='POST'>
+                {% csrf_token %}
+                    <div class="form-group">
+                        <input class="form-control form-control-lg" placeholder="Username" value='{{username}}' type="text" name='username'>
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control form-control-lg" placeholder="Password" value='{{password}}' type="password" name='password'>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-info btn-lg btn-block">Sign In</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+{% endblock login %}

@@ -1,0 +1,12 @@
+{% extends 'base-box.html' %}
+{% block table %}
+
+    <form action="{% url 'revenue' %}" method="POST">
+        {%csrf_token%}
+
+        <table>{{form}}</table>
+
+        <input type="submit" name="" id="">
+    </form>
+
+{% endblock table %}

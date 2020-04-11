@@ -1,0 +1,35 @@
+{% extends 'base-box.html' %}
+
+
+    {% block text_head %}
+        บัญชี
+    {% endblock text_head %}
+
+    {% block desc %}
+        <button onclick="location.href='{%url 'revenue' %}'">เพิ่มรายรับ</button>
+        <button onclick="location.href='{%url 'expense' %}'">เพิ่มรายจ่าย</button>
+    {% endblock desc %}
+
+    {% block table %}
+        <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">วันที่</th>
+                        <th scope="col">รายละเอียด</th>
+                        <th scope="col">รายรับ</th>
+                        <th scope="col">รายจ่าย</th>
+                      </tr>
+                </thead>
+                {%for expense in expenses%}
+                    <tr>
+                        <td>{{expense.date}}</td>
+                        <td>{{expense.description}}</td>
+                        <td></td>
+                        <td>{{expense.amount}}</td>
+                    </tr>
+                {%endfor%}
+        </table>
+
+    {% endblock table %}
+
+

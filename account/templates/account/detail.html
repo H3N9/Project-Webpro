@@ -1,0 +1,36 @@
+{% extends 'base-box.html' %}
+
+    {% block text_head %}
+        รายละเอียดพนักงาน
+    {% endblock text_head %}
+
+    {% block desc %}
+        <h1>{{employee.fname}}</h1>
+    {% endblock desc %}
+
+    {% block table %}
+         <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">วันที่</th>
+                        <th scope="col">เวลาเริ่มงานเช้า</th>
+                        <th scope="col">เวลาเลิกงานเช้า</th>
+                        <th scope="col">เวลาเริ่มงานบ่าย</th>
+                        <th scope="col">เวลาเลิกงานบ่าย</th>
+                        <th scope="col">ค่าจ้างที่ต้องจ่าย</th>
+                      </tr>
+                </thead>
+                {%for date in date_payment%}
+                    <tr>
+                        <td>{{date.date}}</td>
+                        <td>{{date.from_beforenoon}}</td>
+                        <td>{{date.to_beforenoon}}</td>
+                        <td>{{date.from_afternoon}}</td>
+                        <td>{{date.to_afternoon}}</td>
+                        <td>{{date.total_wage}}</td>
+                    </tr>
+                {% endfor %}
+
+            </table>
+            <button onclick="location.href='{%url 'addTime' eid=employee.id %}'">เพิ่มเวลาการทำงาน</button>
+    {% endblock table %}

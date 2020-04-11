@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+    <form action="{%url 'addTime' eid=eid%}" method='POST'>
+        {%csrf_token%}
+        <table>{{formTime}}</table>
+        <input type="submit" name="" value="เพิ่มเวลา">
+    </form>
+
+
+{% endblock content %}

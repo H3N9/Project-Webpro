@@ -1,0 +1,31 @@
+{% extends 'base-box.html' %}
+    {% block text_head %}
+        ผ้าในคลัง
+    {% endblock text_head %}
+    {% block desc %}
+        <button onclick="location.href='{%url 'cloth' %}'">เพิ่มผ้า</button>
+        <button onclick="location.href='{%url 'color' %}'">เพิ่มสี</button>
+    {% endblock desc %}
+    {% block table %}
+
+        <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">จำนวนผ้า</th>
+                        <th scope="col">ประเภทผ้า</th>
+                        <th scope="col">สีผ้า</th>
+                        <th scope="col">ราคา</th>
+                      </tr>
+                </thead>
+                {%for cloth in stocks%}
+                    <tr>
+                        <td>{{cloth.quantity}}</td>
+                        <td>{{cloth.cloth_type}}</td>
+                        <td>{{cloth.color}}</td>
+                        <td>{{cloth.price}}</td>
+                      </tr>
+                {% endfor %}
+        </table>
+        <button onclick="location.href='{%url 'addStock' %}'">เพิ่มผ้าในคลัง</button>
+
+    {% endblock table %}

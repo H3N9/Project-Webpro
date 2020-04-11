@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div id='show'>
+        <div class='head-text'>
+            <h1 class='text-h1'>
+                {% block text_head %}
+                {% endblock text_head %}
+            </h1>
+        </div>
+
+        <div class='search-box'>
+        {% block desc %}
+        {% endblock desc %}
+        </div>
+
+        <div class='box-table'>
+            {%block table%}
+            {% endblock table%}
+        </div>
+    </div>
+{% endblock content %}

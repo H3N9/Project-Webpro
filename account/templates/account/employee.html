@@ -1,0 +1,58 @@
+{% extends 'base-box.html' %}
+
+    {% block text_head %}
+        รายชื่อพนักงาน
+    {% endblock text_head %}
+
+    {% block desc %}
+        <div class='row'>
+                <div class='col-lg-8'>
+                    <form action="{% url 'showEmployee'%}" method='GET'>
+                        <div class='row'>
+                            <div class='col-lg-1'></div>
+                            <div class='col-lg-5'>
+                                <input class="form-control" type="text" name='fname' value='{{fname}}' placeholder="ค้นหาชื่อพนักงาน">
+                            </div>
+                            <div class='col-lg-5'>
+                                <input class="form-control" type="text" name='lname' value='{{lname}}' placeholder="ค้นหานามสกุลพนักงาน">
+                            </div>
+                            <div class='col-lg-1'>
+                                <button class="btn btn-info">ค้นหา</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class='colo-lg-4'>
+                    <div class='row'>
+                        <div class='col-lg-6'>
+                            <button class="btn btn-info" onclick="location.href='{%url 'addEmployee' %}'">เพิ่มพนักงาน</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    {% endblock desc %}
+
+    {% block table %}
+        <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">รหัสพนักงาน</th>
+                        <th scope="col">ชื่อ</th>
+                        <th scope="col">นามสกุล</th>
+                        <th scope="col">รายละเอียด</th>
+                      </tr>
+                </thead>
+                {%for employee in employees%}
+                    <tr>
+                        <td>{{employee.id}}</td>
+                        <td>{{employee.fname}}</td>
+                        <td>{{employee.lname}}</td>
+                        <td>
+                            <button class="btn btn-info" onclick="location.href='{%url 'detail' eid=employee.id %}'">รายละเอียด</button>
+                            <button class="btn btn-info" onclick="location.href='{%url 'deleteEmployee' eid=employee.id %}'">เลิกจ้าง</button>
+                        </td>
+                    </tr>
+                {% endfor %}
+
+            </table>
+    {% endblock table %}

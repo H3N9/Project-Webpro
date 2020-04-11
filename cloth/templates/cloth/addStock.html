@@ -1,0 +1,13 @@
+{% extends 'base-box.html' %}
+    {% block text_head %}
+        เพิ่มผ้าในคลัง
+    {% endblock text_head %}
+    {% block desc %}
+    {% endblock desc %}
+    {% block table %}
+        <form action="{%url 'addStock'%}" method="POST">
+            {%csrf_token%}
+            <table>{{form}}</table>
+            <input type="submit">
+        </form>
+    {% endblock table %}

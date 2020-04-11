@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <div class='row'>
+
+        <div id='employee' class='box-role col-lg-4 sm-12' onclick="location.href='{%url 'showEmployee' %}'">
+
+        </div>
+
+        <div id='account' class='box-role col-lg-4 sm-12' onclick="location.href='{%url 'account' %}'">
+
+        </div>
+
+        <div id='cloth' class='box-role col-lg-4 sm-12' onclick="location.href='{%url 'stock' %}'">
+
+        </div>
+
+    </div>
+
+
+{% endblock content %}
