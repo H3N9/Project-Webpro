@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import EmployeeForm, Working_timeForm, ExpenseForm, RevenueForm
+from .forms import EmployeeForm, Working_timeForm, ExpenseForm, RevenueForm, Paid_salaryForm
 from .models import Employee, Working_time, Expense
 from datetime import datetime
 
@@ -43,6 +43,8 @@ def detail(request, eid):
     context = {}
     employee = Employee.objects.get(pk=eid)
     date_payment = Working_time.objects.filter(employee=eid)
+    form = Paid_salaryForm()
+    context['form'] = form
     context['employee'] = employee
     context['date_payment'] = date_payment
     context['eid'] = eid
@@ -145,3 +147,8 @@ def revenue(request):
             return redirect('revenue')
     context['form'] = form
     return render(request, 'account/revenue.html', context=context)
+
+def paidSalary(request, eid):
+    employee = Employee.objects.get(pk=eid)
+    expense = Expense.objects.filter(employee=employee)
+    return redirect('/employee/detail/%d'%eid)

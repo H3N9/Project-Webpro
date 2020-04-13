@@ -6,6 +6,12 @@
 
     {% block desc %}
         <h1>{{employee.fname}}</h1>
+        <form action="{% url 'paidSalary' eid=eid%}" method="POST">
+            {%csrf_token%}
+            {{form}}
+            <h1>ทั้งหมด:</h1>
+            <input type="submit" value="จ่ายเงิน">
+        </form>
     {% endblock desc %}
 
     {% block table %}
