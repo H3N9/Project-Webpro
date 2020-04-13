@@ -41,9 +41,21 @@ def addEmployee(request):
 
 def detail(request, eid):
     context = {}
+    total = 0
+    paid = 0
     employee = Employee.objects.get(pk=eid)
     date_payment = Working_time.objects.filter(employee=eid)
     form = Paid_salaryForm()
+    if request.method == "POST":
+        form = Paid_salaryForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            date_payment = Working_time.objects.filter(date__range=[data['start_date'], data['end_date']], employee=eid)
+            for each in date_payment:
+                total += each.total_wage
+            paid = 1
+    context['paid'] = paid
+    context['total'] = total
     context['form'] = form
     context['employee'] = employee
     context['date_payment'] = date_payment
@@ -102,10 +114,10 @@ def checkTime(start_bn, end_bn, start_an,end_an, rate):
         hour = an//60
     
     if hour > 8:
-        extra = (hour-8)*rate
+        extra = (hour-8)*rate*1.5
         normal = 8*rate
         return [normal,extra]
-    elif hour <= 8:
+    elif hour <= 8 and hour >= 1:
         normal = hour*rate
         return [normal,0]
 
@@ -150,5 +162,5 @@ def revenue(request):
 
 def paidSalary(request, eid):
     employee = Employee.objects.get(pk=eid)
-    expense = Expense.objects.filter(employee=employee)
+    
     return redirect('/employee/detail/%d'%eid)
