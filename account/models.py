@@ -11,9 +11,7 @@ class Employee(models.Model):
     rating_wage_per_hour = models.FloatField()
 
 class Working_time(models.Model):
-    class Meta:
-        unique_together = [['date', 'employee']]
-    date = models.DateField(primary_key=True)
+    date = models.DateField()
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
     from_beforenoon = models.TimeField(null=True, blank=True)
     to_beforenoon = models.TimeField(null=True,blank=True)
@@ -22,6 +20,8 @@ class Working_time(models.Model):
     normal_wage = models.FloatField()
     ot_wage = models.FloatField()
     total_wage = models.FloatField()
+    class Meta:
+        unique_together = ['date', 'employee']
     
 
 class Expense(models.Model):

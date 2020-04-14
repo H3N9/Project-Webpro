@@ -108,3 +108,9 @@ class Paid_salaryForm(forms.ModelForm):
             'start_date': forms.DateInput(attrs={'type': 'date'}),
             'end_date': forms.DateInput(attrs={'type': 'date'}),
         }
+    def clean(self):
+        clean_data = super().clean()
+        date_data1 = clean_data.get('start_date')
+        date_data2 = clean_data.get('end_date')
+        if date_data1 > date_data2:
+            raise ValidationError('ข้อมูลเวลาผิดพลาด')

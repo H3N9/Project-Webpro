@@ -12,9 +12,20 @@
             <p>ทั้งหมด: {{total}}</p>
             <input type="submit" value="ค้นหา">
         </form>
-        {% if paid %}<button onclick="location.href='{%url 'paidSalary' eid=employee.id %}'">จ่ายเงิน</button>{%endif%}
-    {% endblock desc %}
 
+        {%if paid%}
+        <form action="{%url 'paidSalary' eid=employee.id %}" method='POST'>
+            {%csrf_token%}
+            <input type="hidden" name='st' value="{{st}}">
+            <input type="hidden" name='ed' value="{{ed}}">
+            <input type="hidden", name='total' value="{{total}}">
+            <input type="submit" value='จ่ายเงิน'>
+
+        </form>
+        {%endif%} 
+        
+    {% endblock desc %}
+    
     {% block table %}
          <table class="table table-striped">
                 <thead>

@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from .forms import EmployeeForm, Working_timeForm, ExpenseForm, RevenueForm, Paid_salaryForm
-from .models import Employee, Working_time, Expense
+from .models import Employee, Working_time, Expense, Paid_salary
 from datetime import datetime
+from dateutil.parser import parse
 
 # Create your views here.
 def showEmployee(request):
@@ -54,6 +55,8 @@ def detail(request, eid):
             for each in date_payment:
                 total += each.total_wage
             paid = 1
+            context['st'] = data['start_date']
+            context['ed'] = data['end_date']
     context['paid'] = paid
     context['total'] = total
     context['form'] = form
@@ -162,5 +165,21 @@ def revenue(request):
 
 def paidSalary(request, eid):
     employee = Employee.objects.get(pk=eid)
-    
+    if request.method == "POST":
+        st = parse(request.POST.get('st'))
+        ed = parse(request.POST.get('ed'))
+        total = request.POST.get('total')
+        date_payment = Working_time.objects.filter(date__range=[st, ed], employee=eid)
+        expense = Expense.objects.create(
+            amount=total,
+            date=datetime.now(),
+            description='จ่ายเงินลูกจ้าง',
+            type_expense='1',
+        )
+        paid = Paid_salary.objects.create(
+            expense=expense,
+            start_date=st,
+            end_date=ed,
+            employee=Employee.objects.get(pk=eid),
+        )
     return redirect('/employee/detail/%d'%eid)
