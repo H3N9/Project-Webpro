@@ -114,3 +114,13 @@ class Paid_salaryForm(forms.ModelForm):
         date_data2 = clean_data.get('end_date')
         if date_data1 > date_data2:
             raise ValidationError('ข้อมูลเวลาผิดพลาด')
+
+class CustomerForm(forms.ModelForm):
+    class Meta:
+        model = models.Customer
+        fields = '__all__'
+        labels = {
+            'name':'ชื่อลูกค้า',
+            'contact':'เบอร์ติดต่อ',
+            'address':'ที่อยู่',
+        }

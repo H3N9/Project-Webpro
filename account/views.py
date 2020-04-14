@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
-from .forms import EmployeeForm, Working_timeForm, ExpenseForm, RevenueForm, Paid_salaryForm
-from .models import Employee, Working_time, Expense, Paid_salary
+from .forms import EmployeeForm, Working_timeForm, ExpenseForm, RevenueForm, Paid_salaryForm, CustomerForm
+from .models import Employee, Working_time, Expense, Paid_salary, Customer
 from datetime import datetime
 from dateutil.parser import parse
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+@login_required
 def showEmployee(request):
     context = {}
     employees = Employee.objects.all()
@@ -20,6 +22,7 @@ def showEmployee(request):
     context['employees'] = employees
     return render(request, 'account/employee.html', context=context)
 
+@login_required
 def addEmployee(request):
     context = {}
     form = EmployeeForm()
@@ -40,6 +43,7 @@ def addEmployee(request):
     context['form'] = form
     return render(request, 'account/addEmployee.html', context=context)
 
+@login_required
 def detail(request, eid):
     context = {}
     total = 0
@@ -65,11 +69,13 @@ def detail(request, eid):
     context['eid'] = eid
     return render(request, 'account/detail.html', context=context)
 
+@login_required
 def deleteEmployee(request, eid):
     employee = Employee.objects.get(pk=eid)
     employee.delete()
     return redirect('showEmployee')
 
+@login_required
 def addTime(request, eid):
     context = {}
     formTime = Working_timeForm()
@@ -103,7 +109,6 @@ def addTime(request, eid):
     return render(request, 'account/addTime.html', context=context)
 
 
-
 def checkTime(start_bn, end_bn, start_an,end_an, rate):
     if start_bn and end_bn and start_an and end_an:
         bn = (end_bn.hour*60+end_bn.minute)-(start_bn.hour*60+start_bn.minute)
@@ -125,14 +130,14 @@ def checkTime(start_bn, end_bn, start_an,end_an, rate):
         return [normal,0]
 
 
-
+@login_required
 def account(request):
     context = {}
     expenses = Expense.objects.all()
     context['expenses'] = expenses
     return render(request, 'account/account.html', context=context)
 
-
+@login_required
 def expense(request):
     context = {}
     form = ExpenseForm()
@@ -151,7 +156,7 @@ def expense(request):
     return render(request, 'account/expense.html', context=context)
 
 
-
+@login_required
 def revenue(request):
     context = {}
     form = RevenueForm()
@@ -163,6 +168,7 @@ def revenue(request):
     context['form'] = form
     return render(request, 'account/revenue.html', context=context)
 
+@login_required
 def paidSalary(request, eid):
     employee = Employee.objects.get(pk=eid)
     if request.method == "POST":
@@ -183,3 +189,24 @@ def paidSalary(request, eid):
             employee=Employee.objects.get(pk=eid),
         )
     return redirect('/employee/detail/%d'%eid)
+
+
+def customer(request):
+    context = {}
+    return render(request, 'account/customer.html', context=context)
+
+def addCustomer(request):
+    context = {}
+    form = CustomerForm()
+    if request.method == 'POST':
+        form = CustomerForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            customer = Customer.objects.create(
+                name=data['name'],
+                contact=data['contact'],
+                address=data['address'],
+            )
+            return redirect('customer')
+    context['form'] = form
+    return render(request, 'account/addCustomer.html', context=context)

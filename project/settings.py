@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'project',
+        'NAME': 'factoryCloth',
         'USER': 'postgres',
         'PASSWORD': '1234',
         'HOST': 'localhost',
@@ -129,3 +129,5 @@ STATIC_URL = '/decoration/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'decoration')
 ]
+
+LOGIN_URL = '/login/'

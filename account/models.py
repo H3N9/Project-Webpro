@@ -38,8 +38,8 @@ class Paid_salary(models.Model):
 
 class Customer(models.Model):
     name = models.CharField(max_length=255)
-    contact = models.CharField(max_length=10)
-    address = models.TextField()
+    contact = models.CharField(max_length=10, null=True)
+    address = models.TextField(null=True)
 
 class Revenue(models.Model):
     amount = models.FloatField()
@@ -47,7 +47,7 @@ class Revenue(models.Model):
         choices=[('1','ขายผ้าจากคลัง'),('2','รับจ้างย้อม')],max_length=1)
     date = models.DateField()
     description = models.TextField(null=True)
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True)
 
 class Selling(models.Model):
     revenue = models.OneToOneField(Revenue, primary_key=True, on_delete=models.CASCADE)
