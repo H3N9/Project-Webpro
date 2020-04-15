@@ -12,7 +12,7 @@
             <p>ทั้งหมด: {{total}}</p>
             <input type="submit" value="ค้นหา">
         </form>
-
+        <button onclick="location.href='{%url 'editEmployee' eid=employee.id %}'">แก้ไขข้อมูล</button>
         {%if paid%}
         <form action="{%url 'paidSalary' eid=employee.id %}" method='POST'>
             {%csrf_token%}

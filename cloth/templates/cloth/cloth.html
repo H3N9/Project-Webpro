@@ -1,13 +1,28 @@
 {% extends 'base-box.html' %}
     {% block text_head %}
-        เพิ่มผ้า
+        ผ้า
     {% endblock text_head %}
     {% block desc %}
     {% endblock desc %}
     {% block table %}
-        <form action="{%url 'cloth'%}" method="POST">
-            {%csrf_token%}
-            <table>{{form}}</table>
-            <input type="submit">
-        </form>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">ชื่อผ้า</th>
+                <th scope="col">รายละเอียด</th>
+                <th scope="col">แก้ไข</th>
+            </tr>
+        </thead>
+        {% for cloth in cloths %}
+            <tr>
+                <td>{{cloth.name}}</td>
+                <td>{{cloth.cloth_desc}}</td>
+                <td>
+                    <button onclick="location.href='{%url 'clothEdit' cid=cloth.id %}'">แก้ไขผ้า</button>
+                
+                </td>
+            </tr>  
+        {% endfor %}
+    </table>
+    <button onclick="location.href='{%url 'clothAdd' %}'">เพิ่มผ้า</button>
     {% endblock table %}

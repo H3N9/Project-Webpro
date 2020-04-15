@@ -1,13 +1,28 @@
 {% extends 'base-box.html' %}
     {% block text_head %}
-        เพิ่มสี
+        ผ้า
     {% endblock text_head %}
     {% block desc %}
     {% endblock desc %}
     {% block table %}
-        <form action="{%url 'color'%}" method="POST" enctype="multipart/form-data">
-            {%csrf_token%}
-            <table>{{form}}</table>
-            <input type="submit">
-        </form>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">ชื่อสี</th>
+                <th scope="col">รูปสี</th>
+                <th scope="col">แก้ไข</th>
+            </tr>
+        </thead>
+        {% for color in colors %}
+            <tr>
+                <td>{{color.name}}</td>
+                <td>{{color.image}}</td>
+                <td>
+                    <button onclick="location.href='{%url 'colorEdit' cid=color.id %}'">แก้ไขผ้า</button>
+                
+                </td>
+            </tr>  
+        {% endfor %}
+    </table>
+    <button onclick="location.href='{%url 'colorAdd' %}'">เพิ่มผ้า</button>
     {% endblock table %}

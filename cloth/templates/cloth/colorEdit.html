@@ -1,0 +1,13 @@
+{% extends 'base-box.html' %}
+    {% block text_head %}
+        แก้ไขสี
+    {% endblock text_head %}
+    {% block desc %}
+    {% endblock desc %}
+    {% block table %}
+        <form action="{%url 'colorEdit' cid=color.id %}" method="POST">
+            {%csrf_token%}
+            <table>{{form}}</table>
+            <input type="submit">
+        </form>
+    {% endblock table %}

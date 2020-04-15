@@ -210,3 +210,22 @@ def addCustomer(request):
             return redirect('customer')
     context['form'] = form
     return render(request, 'account/addCustomer.html', context=context)
+
+def editEmployee(request, eid):
+    context = {}
+    employee = Employee.objects.get(pk=eid)
+    form = EmployeeForm(instance=employee)
+    if request.method == 'POST':
+        form = EmployeeForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            employee.fname = data['fname']
+            employee.lname = data['lname']
+            employee.birthdate = data['birthdate']
+            employee.hire_date = data['hire_date']
+            employee.rating_wage_per_hour = data['rating_wage_per_hour']
+            employee.save()
+            return redirect('/employee/detail/%d'%eid)
+    context['form'] = form
+    context['employee'] = employee
+    return render(request, 'account/editEmployee.html', context=context)
