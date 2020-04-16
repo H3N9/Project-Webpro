@@ -1,9 +1,13 @@
 from django.shortcuts import render, redirect
-from .forms import EmployeeForm, Working_timeForm, ExpenseForm, RevenueForm, Paid_salaryForm, CustomerForm
-from .models import Employee, Working_time, Expense, Paid_salary, Customer
+from .forms import EmployeeForm, Working_timeForm, ExpenseForm, RevenueForm, Paid_salaryForm, CustomerForm, Sell_listForm, Engage_listForm
+from .models import Employee, Working_time, Expense, Paid_salary, Customer, Revenue, Sell_list, Engage_list, Selling, Engaging
 from datetime import datetime
 from dateutil.parser import parse
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+import json
+
 
 # Create your views here.
 @login_required
@@ -134,6 +138,8 @@ def checkTime(start_bn, end_bn, start_an,end_an, rate):
 def account(request):
     context = {}
     expenses = Expense.objects.all()
+    revenues = Revenue.objects.all()
+    context['revenues'] = revenues
     context['expenses'] = expenses
     return render(request, 'account/account.html', context=context)
 
@@ -164,7 +170,16 @@ def revenue(request):
         form = RevenueForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
-            return redirect('revenue')
+            revenue = Revenue.objects.create(
+                amount=data['amount'],
+                type_revenue=data['type_revenue'],
+                description=data['description'],
+                customer=data['customer']
+            )
+            if data['type_revenue'] == '1':
+                return redirect('/account/revenue/sell/%d/'%revenue.id)
+            elif data['type_revenue'] == '2':
+                return redirect('/account/revenue/engage/%d/'%revenue.id)
     context['form'] = form
     return render(request, 'account/revenue.html', context=context)
 
@@ -229,3 +244,48 @@ def editEmployee(request, eid):
     context['form'] = form
     context['employee'] = employee
     return render(request, 'account/editEmployee.html', context=context)
+
+def sell(request, aid):
+    context = {}
+    revenue = Revenue.objects.get(pk=aid)
+    form = Sell_listForm()
+    if request.method == 'POST':
+        form = Sell_listForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            selling = Selling.objects.create(revenue=revenue)
+            add = Sell_list.objects.create(
+                selling_revenue=selling,
+                quantity=data['quantity'],
+                unit_price=data['unit_price'],
+                cloth_in_stock=data['cloth_in_stock']
+            )
+            cloth = data['cloth_in_stock']
+            cloth.quantity = cloth.quantity-data['quantity']
+            cloth.save()
+            return redirect('account')
+    context['revenue'] = revenue
+    context['form'] = form
+    return render(request, 'account/sell.html', context=context)
+
+def engage(request, aid):
+    context = {}
+    form = Engage_listForm()
+    revenue = Revenue.objects.get(pk=aid)
+    if request.method == 'POST':
+        form = Engage_listForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            engaging = Engaging.objects.create(revenue=revenue)
+            add = Engage_list.objects.create(
+                engaging_revenue=engaging,
+                quantity=data['quantity'],
+                unit_price=data['unit_price'],
+                cloth_type=data['cloth_type'],
+                color=data['color']
+            )
+            return redirect('account')
+    context['revenue'] = revenue
+    context['form'] = form
+    return render(request, 'account/engage.html', context=context)
+

@@ -1,6 +1,7 @@
 from django import forms
 from . import models
 from django.core.exceptions import ValidationError
+from cloth.models import Cloth_in_stock
 
 
 class EmployeeForm(forms.ModelForm):
@@ -82,6 +83,9 @@ class ExpenseForm(forms.ModelForm):
         }
 
 class RevenueForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(RevenueForm, self).__init__(*args, **kwargs)
+        self.fields['customer'].required = False
     class Meta:
         model = models.Revenue
         fields = '__all__'
@@ -94,6 +98,7 @@ class RevenueForm(forms.ModelForm):
         }
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date'}),
+            'type_revenue': forms.Select(attrs={'onchange':'sendForm()'}),
         }
 
 class Paid_salaryForm(forms.ModelForm):
@@ -123,4 +128,31 @@ class CustomerForm(forms.ModelForm):
             'name':'ชื่อลูกค้า',
             'contact':'เบอร์ติดต่อ',
             'address':'ที่อยู่',
+        }
+
+class Sell_listForm(forms.ModelForm):
+    class Meta:
+        model = models.Sell_list
+        exclude = ['selling_revenue','list_no']
+        labels = {
+            'quantity':'จำนวน',
+            'unit_price':'ราคาต่อหน่วย',
+            'cloth_in_stock':'ผ้าจากในคลัง',
+        }
+
+    def clean(self):
+        quantity = self.cleaned_data.get('quantity')
+        cloth_in_stock = self.cleaned_data.get('cloth_in_stock')
+        if quantity > cloth_in_stock.quantity:
+            raise ValidationError('มีจำนวนไม่พอ')
+
+class Engage_listForm(forms.ModelForm):
+    class Meta:
+        model = models.Engage_list
+        exclude = ['engaging_revenue', 'list_no']
+        labels = {
+            'quantity':'จำนวน',
+            'unit_price':'ราคาต่อหน่วย',
+            'cloth_type':'ประเภทผ้า',
+            'color':'สี',
         }
