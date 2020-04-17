@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import json
+from django.db.models import Max, Min #Models.objects.all().aggregate(Avg('price'))
 
 
 # Create your views here.

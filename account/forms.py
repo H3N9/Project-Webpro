@@ -136,7 +136,7 @@ class Sell_listForm(forms.ModelForm):
         exclude = ['selling_revenue','list_no']
         labels = {
             'quantity':'จำนวน',
-            'unit_price':'ราคาต่อหน่วย',
+            'unit_price':'ราคาทั้งหมด',
             'cloth_in_stock':'ผ้าจากในคลัง',
         }
 

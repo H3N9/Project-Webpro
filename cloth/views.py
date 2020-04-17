@@ -70,7 +70,7 @@ def colorEdit(request, cid):
     color = Color.objects.get(pk=cid)
     form = ColorForm(instance=color)
     if request.method == "POST":
-        form = ColorForm(request.POST)
+        form = ColorForm(request.POST, request.FILES or None)
         if form.is_valid():
             data = form.cleaned_data
             color.name = data['name']
@@ -83,7 +83,7 @@ def colorAdd(request):
     context = {}
     form = ColorForm()
     if request.method=='POST':
-        form = ColorForm(request.POST)
+        form = ColorForm(request.POST, request.FILES or None)
         if form.is_valid():
             data = form.cleaned_data
             add = Color.objects.create(name=data['name'],image=data['image'])

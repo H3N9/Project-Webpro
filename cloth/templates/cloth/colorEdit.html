@@ -5,7 +5,7 @@
     {% block desc %}
     {% endblock desc %}
     {% block table %}
-        <form action="{%url 'colorEdit' cid=color.id %}" method="POST">
+        <form action="{%url 'colorEdit' cid=color.id %}" method="POST" enctype="multipart/form-data">
             {%csrf_token%}
             <table>{{form}}</table>
             <input type="submit">

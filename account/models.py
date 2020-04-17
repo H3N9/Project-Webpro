@@ -41,6 +41,10 @@ class Customer(models.Model):
     contact = models.CharField(max_length=10, null=True)
     address = models.TextField(null=True)
 
+    def __str__(self):
+        return self.name
+    
+
 class Revenue(models.Model):
     amount = models.FloatField()
     types = [('1','ขายผ้าจากคลัง'),('2','รับจ้างย้อม')]
