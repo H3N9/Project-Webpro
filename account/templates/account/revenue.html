@@ -1,12 +1,33 @@
 {% extends 'base-box.html' %}
+{% block text_head %}
+รายรับ
+{% endblock text_head %}
 {% block table %}
-
     <form action="{% url 'revenue' %}" method="POST">
         {%csrf_token%}
-
-        <table>{{form}}</table>
-
-        <input type="submit" name="" id="">
+        <div class="form-group">
+            <div class="form-group">
+                <label for="formGroupExampleInput">{{form.amount.label}}</label>
+                {{form.amount}}
+            </div>
+            <div class="form-group">
+                <label for="formGroupExampleInput">{{form.type_revenue.label}}</label>
+                {{form.type_revenue}}
+            </div>
+            <div class="form-group">
+                <label for="formGroupExampleInput">{{form.date.label}}</label>
+                {{form.date}}
+            </div>
+            <div class="form-group">
+                <label for="formGroupExampleInput">{{form.description.label}}</label>
+                {{form.description}}
+            </div>
+            <div class="form-group">
+                <label for="formGroupExampleInput">{{form.customer.label}}</label>
+                {{form.customer}}
+            </div>
+        </div>
+        <input style="width: 100px;" class="btn btn-success" type="submit" name="" id="" value="ตกลง">
     </form>
 
 {% endblock table %}

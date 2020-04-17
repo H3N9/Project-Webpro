@@ -6,30 +6,23 @@
 
     {% block desc %}
         <div class='row'>
-                <div class='col-lg-8'>
-                    <form action="{% url 'showEmployee'%}" method='GET'>
-                        <div class='row'>
-                            <div class='col-lg-1'></div>
-                            <div class='col-lg-5'>
-                                <input class="form-control" type="text" name='fname' value='{{fname}}' placeholder="ค้นหาชื่อพนักงาน">
-                            </div>
-                            <div class='col-lg-5'>
-                                <input class="form-control" type="text" name='lname' value='{{lname}}' placeholder="ค้นหานามสกุลพนักงาน">
-                            </div>
-                            <div class='col-lg-1'>
-                                <button class="btn btn-info">ค้นหา</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class='colo-lg-4'>
-                    <div class='row'>
-                        <div class='col-lg-6'>
-                            <button class="btn btn-info" onclick="location.href='{%url 'addEmployee' %}'">เพิ่มพนักงาน</button>
-                        </div>
+            <form action="{% url 'showEmployee'%}" method='GET' class="col-12">
+                <div class="row">
+                    <div class='col-12 col-lg-4 ' style="margin-top: 5px;">
+                        <input class="form-control" type="text" name='fname' value='{{fname}}' placeholder="ค้นหาชื่อพนักงาน">
                     </div>
-                </div>
-            </div>
+                    <div class='col-12 col-lg-4' style="margin-top: 5px;">
+                        <input class="form-control" type="text" name='lname' value='{{lname}}' placeholder="ค้นหานามสกุลพนักงาน">
+                    </div>
+                    <div class='col-6 col-lg-2 ' style="margin-top: 5px;">
+                        <button class="btn btn-info">ค้นหา</button>
+                    </div>                    
+                <div class='col-lg-2 col-6' style="margin-top: 5px;">
+                    <div style="right: 5%;" class="btn btn-success position-absolute"  onclick="location.href='{%url 'addEmployee' %}'">เพิ่มพนักงาน</div>
+                </div>  
+            </div>                
+            </form>
+        </div> 
     {% endblock desc %}
 
     {% block table %}
@@ -48,8 +41,8 @@
                         <td>{{employee.fname}}</td>
                         <td>{{employee.lname}}</td>
                         <td>
-                            <button class="btn btn-info" onclick="location.href='{%url 'detail' eid=employee.id %}'">รายละเอียด</button>
-                            <button class="btn btn-info" onclick="location.href='{%url 'deleteEmployee' eid=employee.id %}'">เลิกจ้าง</button>
+                            <button style="width: 90px; margin-bottom: 3px; " class="btn btn-info" onclick="location.href='{%url 'detail' eid=employee.id %}'">รายละเอียด</button>
+                            <button style="width: 90px;" class="btn btn-danger"  onclick="location.href='{%url 'deleteEmployee' eid=employee.id %}'">เลิกจ้าง</button>
                         </td>
                     </tr>
                 {% endfor %}

@@ -1,19 +1,22 @@
-#content{
-    height: 100%;
-    width: 100%;
-}
+
 .box-role{
     height: 50vh;
     cursor: pointer;
 }
 #employee{
-    background-color: lime;
+}
+#employee:hover{
+    opacity: 50%;
 }
 #account{
-    background-color: orange;
+}
+#account:hover{
+    opacity: 50%;
 }
 #cloth{
-    background-color: gainsboro;
+}
+#cloth:hover{
+    opacity: 50%;
 }
 #show{
     width: 90%;
@@ -41,7 +44,6 @@
 }
 .search-box{
     width: 100%;
-    height: 10%;
 }
 .box-table{
     width: 100%;

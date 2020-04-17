@@ -8,9 +8,29 @@
 
         {% block table %}
             <form action="{% url 'addEmployee' %}" method='POST'>
-                {%csrf_token%}
-                {{form}}
-
-                <input type="submit" value="เพิ่มพนักงาน">
+                {%csrf_token%}        
+                <div class="form-row">        
+                    <div class="col">
+                        <label for="formGroupExampleInput">{{form.fname.label}}</label>
+                        {{form.fname}}
+                    </div>
+                    <div class="col">
+                        <label for="formGroupExampleInput">{{form.lname.label}}</label>
+                        {{form.lname}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="formGroupExampleInput">{{form.birthdate.label}}</label>
+                    {{form.birthdate}}
+                </div>
+                <div class="form-group">
+                    <label for="formGroupExampleInput">{{form.hire_date.label}}</label>
+                    {{form.hire_date}}
+                </div>
+                <div class="form-group">
+                    <label for="formGroupExampleInput">{{form.rating_wage_per_hour.label}}</label>
+                    {{form.rating_wage_per_hour}}
+                </div>
+                <input type="submit" value="เพิ่มพนักงาน" class="btn btn-success">
             </form>
         {% endblock table %}

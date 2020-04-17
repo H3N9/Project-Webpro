@@ -1,12 +1,15 @@
 {% extends 'base-box.html' %}
-{% block table %}
-
+{% block text_head %}
+    รายจ่าย
+{% endblock text_head %}
+{% block table %}    
     <form action="{%url 'expense'%}" method="POST">
         {%csrf_token%}
-
-        <table>{{form}}</table>
-
-        <input type="submit" name="" id="">
+        <div class="form-group">
+            {{form}}
+        </div>
+        <button style="width: 100px;" class="btn btn-success">ตกลง</button>
+        
     </form>
 
 
