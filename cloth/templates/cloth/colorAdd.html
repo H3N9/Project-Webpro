@@ -7,7 +7,14 @@
     {% block table %}
         <form action="{%url 'colorAdd'%}" method="POST" enctype="multipart/form-data">
             {%csrf_token%}
-            <table>{{form}}</table>
-            <input type="submit">
+            <div class="form-group">
+                <label>{{form.name.label}}</label>
+                {{form.name}}
+            </div>
+            <div class="form-group">
+                <label>{{form.image.label}}</label><br>
+                {{form.image}}
+            </div>
+            <input style="width: 80px;" class="btn btn-success" type="submit" value="ตกลง">
         </form>
     {% endblock table %}

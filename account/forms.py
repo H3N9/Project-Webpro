@@ -102,17 +102,13 @@ class RevenueForm(forms.ModelForm):
             'type_revenue':'ประเภทรายรับ',
         }
         widgets = {
-<<<<<<< HEAD
             'date': forms.DateInput(attrs={'type': 'date', 'class':'form-control'}),
             'amount':forms.NumberInput(attrs={ 'class':'form-control'}),
             'description':forms.Textarea(attrs={ 'class':'form-control', 'rows':'3'}),
             'customer':forms.Select(attrs={ 'class':'form-control'}),
             'type_revenue':forms.Select(attrs={ 'class':'form-control'})
         }
-=======
-            'date': forms.DateInput(attrs={'type': 'date'}),
-            'type_revenue': forms.Select(attrs={'onchange':'sendForm()'}),
-        }
+
 
 class Paid_salaryForm(forms.ModelForm):
     class Meta:
@@ -169,4 +165,3 @@ class Engage_listForm(forms.ModelForm):
             'cloth_type':'ประเภทผ้า',
             'color':'สี',
         }
->>>>>>> bb98b34520fd03cb39d34d4cde901784e413be41

@@ -5,20 +5,7 @@
     {% block desc %}
     {% endblock desc %}
     {% block table %}
-<<<<<<< HEAD
-        <form action="{%url 'color'%}" method="POST" enctype="multipart/form-data">
-            {%csrf_token%}
-            <div class="form-group">
-                <label>{{form.name.label}}</label>
-                {{form.name}}
-            </div>
-            <div class="form-group">
-                <label>{{form.image.label}}</label><br>
-                {{form.image}}
-            </div>
-            <input style="width: 80px;" class="btn btn-success" type="submit" value="ตกลง">
-        </form>
-=======
+
     <table class="table table-striped">
         <thead>
             <tr>
@@ -32,12 +19,12 @@
                 <td>{{color.name}}</td>
                 <td>{%if color.image %}<img src='../../{{color.image}}'>{%endif%}</td>
                 <td>
-                    <button onclick="location.href='{%url 'colorEdit' cid=color.id %}'">แก้ไขผ้า</button>
+                    <button onclick="location.href='{%url 'colorEdit' cid=color.id %}'">แก้ไขสี</button>
                 
                 </td>
             </tr>  
         {% endfor %}
     </table>
-    <button onclick="location.href='{%url 'colorAdd' %}'">เพิ่มผ้า</button>
->>>>>>> bb98b34520fd03cb39d34d4cde901784e413be41
+    <button onclick="location.href='{%url 'colorAdd' %}'">เพิ่มสี</button>
+
     {% endblock table %}
