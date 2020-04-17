@@ -15,6 +15,7 @@
                         <th scope="col">ประเภทผ้า</th>
                         <th scope="col">สีผ้า</th>
                         <th scope="col">ราคา</th>
+                        <th scope="col">แก้ไข</th>
                       </tr>
                 </thead>
                 {%for cloth in stocks%}
@@ -23,6 +24,9 @@
                         <td>{{cloth.cloth_type}}</td>
                         <td>{{cloth.color}}</td>
                         <td>{{cloth.price}}</td>
+                        <td>
+                            <button onclick="location.href='{%url 'stockEdit' sid=cloth.id %}'">แก้ไขผ้า</button>
+                        </td>
                       </tr>
                 {% endfor %}
         </table>

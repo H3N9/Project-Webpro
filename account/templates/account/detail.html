@@ -2,18 +2,20 @@
 
     {% block text_head %}
         รายละเอียดพนักงาน
+        <input type="hidden" id="eid" value='{{employee.id}}'>
     {% endblock text_head %}
 
     {% block desc %}
-        <h1>{{employee.fname}}</h1>
+        <!--<h1>{{employee.fname}}</h1>
         <form action="{% url 'detail' eid=employee.id%}" method="POST">
             {%csrf_token%}
             {{form}}
             <p>ทั้งหมด: {{total}}</p>
             <input type="submit" value="ค้นหา">
-        </form>
+        </form>-->
         <button onclick="location.href='{%url 'editEmployee' eid=employee.id %}'">แก้ไขข้อมูล</button>
-        {%if paid%}
+
+        <!--{%if paid%}
         <form action="{%url 'paidSalary' eid=employee.id %}" method='POST'>
             {%csrf_token%}
             <input type="hidden" name='st' value="{{st}}">
@@ -22,12 +24,16 @@
             <input type="submit" value='จ่ายเงิน'>
 
         </form>
-        {%endif%} 
+        {%endif%}-->
+        <button></button>
         
     {% endblock desc %}
     
     {% block table %}
-         <table class="table table-striped">
+        <table id='list-worktime'>
+
+        </table>
+         <!--<table class="table table-striped">
                 <thead>
                     <tr>
                         <th scope="col">วันที่</th>
@@ -49,6 +55,17 @@
                     </tr>
                 {% endfor %}
 
-            </table>
+            </table>-->
             <button onclick="location.href='{%url 'addTime' eid=employee.id %}'">เพิ่มเวลาการทำงาน</button>
+
+            <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+            <script>
+                var eid = document.getElementById('eid').value
+                var table = document.getElementById('list-worktime')
+                axios.get('/employee/detail/api/'+eid+'/')
+                .then(function(response){
+                    var data = response.data
+                    console.log(data)
+                })
+            </script>
     {% endblock table %}

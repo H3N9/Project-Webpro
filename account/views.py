@@ -8,6 +8,11 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import json
 from django.db.models import Max, Min #Models.objects.all().aggregate(Avg('price'))
+from rest_framework.renderers import JSONRenderer
+from .serializers import EmployeeSerializer, Working_timeSerializer
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 
 # Create your views here.
@@ -73,6 +78,14 @@ def detail(request, eid):
     context['date_payment'] = date_payment
     context['eid'] = eid
     return render(request, 'account/detail.html', context=context)
+
+@csrf_exempt
+def sendDataAPI(request, eid):
+    
+    if request.method == 'GET':
+        employee = Employee.objects.get(pk=eid)
+        serializer = EmployeeSerializer(instance=employee)
+        return JsonResponse(serializer.data, status=200, safe=False)
 
 @login_required
 def deleteEmployee(request, eid):

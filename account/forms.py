@@ -152,7 +152,7 @@ class Engage_listForm(forms.ModelForm):
         exclude = ['engaging_revenue', 'list_no']
         labels = {
             'quantity':'จำนวน',
-            'unit_price':'ราคาต่อหน่วย',
+            'unit_price':'ราคาทั้งหมด',
             'cloth_type':'ประเภทผ้า',
             'color':'สี',
         }

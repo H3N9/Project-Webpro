@@ -12,7 +12,7 @@ class Employee(models.Model):
 
 class Working_time(models.Model):
     date = models.DateField()
-    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name="working_times")
     from_beforenoon = models.TimeField(null=True, blank=True)
     to_beforenoon = models.TimeField(null=True,blank=True)
     from_afternoon = models.TimeField(null=True,blank=True)

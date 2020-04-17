@@ -10,4 +10,5 @@ urlpatterns = [
     path('cloth/type/edit/<int:cid>/', views.clothEdit, name='clothEdit'),
     path('cloth/color/edit/<int:cid>/', views.colorEdit, name='colorEdit'),
     path('cloth/color/add/', views.colorAdd, name='colorAdd'),
+    path('cloth/stock/edit/<int:sid>/', views.stockEdit, name='stockEdit'),
 ]

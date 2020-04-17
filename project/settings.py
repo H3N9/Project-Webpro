@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'ceo',
     'cloth',
     'authen',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

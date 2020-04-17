@@ -90,3 +90,18 @@ def colorAdd(request):
             return redirect('color')
     context['form'] = form
     return render(request, 'cloth/colorAdd.html', context=context)
+
+def stockEdit(request, sid):
+    cloth = Cloth_in_stock.objects.get(pk=sid)
+    form = Cloth_in_stockForm(instance=cloth)
+    if request.method == 'POST':
+        form = Cloth_in_stockForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            cloth.quantity = data['quantity']
+            cloth.cloth_type = data['cloth_type']
+            cloth.color = data['color']
+            cloth.price = data['price']
+            cloth.save()
+            return redirect('stock')
+    return render(request, 'cloth/stockEdit.html', context={'form':form, 'cloth':cloth})

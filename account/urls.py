@@ -16,4 +16,5 @@ urlpatterns = [
     path('employee/edit/<int:eid>/', views.editEmployee, name='editEmployee'),
     path('account/revenue/sell/<int:aid>/', views.sell, name='sell'),
     path('account/revenue/engage/<int:aid>/', views.engage, name='engage'),
+    path('employee/detail/api/<int:eid>/', views.sendDataAPI, name='sendDataAPI'),
 ]
