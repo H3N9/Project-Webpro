@@ -7,14 +7,18 @@
 
     {% block desc %}
         <h1>{{employee.fname}}</h1>
+
+        <button onclick="location.href='{%url 'editEmployee' eid=employee.id %}'">แก้ไขข้อมูล</button>
+        <h3>เลือกวันจ่ายเงิน</h3>
         <form action="{% url 'detail' eid=employee.id%}" method="POST">
             {%csrf_token%}
             {{form}}
-            <p>ทั้งหมด: {{total}}</p>
-            <input type="submit" value="ค้นหา">
+            <input type="submit" value="เลือก">
+            
+            
         </form>
-        <button onclick="location.href='{%url 'editEmployee' eid=employee.id %}'">แก้ไขข้อมูล</button>
-
+        
+        <p>ทั้งหมด: {{total}}</p>
         {%if paid%}
         <form action="{%url 'paidSalary' eid=employee.id %}" method='POST'>
             {%csrf_token%}

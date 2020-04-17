@@ -20,7 +20,7 @@ class EmployeeForm(forms.ModelForm):
             'lname': forms.DateInput(attrs={'class': 'form-control'}),
             'hire_date': forms.DateInput(attrs={'type': 'date', 'class':'form-control'}),
             'birthdate': forms.DateInput(attrs={'type': 'date', 'class':'form-control'}),
-            'rating_wage_per_hour': forms.DateInput(attrs={'class': 'form-control'})
+            'rating_wage_per_hour': forms.DateInput(attrs={'class': 'form-control','oninput':"positive(document.getElementById(\'id_rating_wage_per_hour\'))"})
         }
 
 class Working_timeForm(forms.ModelForm):
@@ -83,7 +83,7 @@ class ExpenseForm(forms.ModelForm):
         }
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date', 'class':'form-control'}),
-            'amount':forms.DateInput(attrs={ 'class':'form-control'}),
+            'amount':forms.NumberInput(attrs={ 'class':'form-control','oninput':"positive(document.getElementById(\'id_amount\'))"}),
             'description':forms.Textarea(attrs={ 'class':'form-control', 'rows':'3'})
         }
 
@@ -103,7 +103,7 @@ class RevenueForm(forms.ModelForm):
         }
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date', 'class':'form-control'}),
-            'amount':forms.NumberInput(attrs={ 'class':'form-control'}),
+            'amount':forms.NumberInput(attrs={ 'class':'form-control','oninput':"positive(document.getElementById(\'id_amount\'))"}),
             'description':forms.Textarea(attrs={ 'class':'form-control', 'rows':'3'}),
             'customer':forms.Select(attrs={ 'class':'form-control'}),
             'type_revenue':forms.Select(attrs={ 'class':'form-control'})
@@ -148,6 +148,10 @@ class Sell_listForm(forms.ModelForm):
             'unit_price':'ราคาทั้งหมด',
             'cloth_in_stock':'ผ้าจากในคลัง',
         }
+        widgets = {
+            'quantity':forms.NumberInput(attrs={'oninput':"positive(document.getElementById(\'id_quantity\'))"}),
+            'unit_price': forms.NumberInput(attrs={'oninput':"positive(document.getElementById(\'id_unit_price\'))"}),
+        }
 
     def clean(self):
         quantity = self.cleaned_data.get('quantity')
@@ -164,4 +168,8 @@ class Engage_listForm(forms.ModelForm):
             'unit_price':'ราคาทั้งหมด',
             'cloth_type':'ประเภทผ้า',
             'color':'สี',
+        }
+        widgets = {
+            'quantity': forms.NumberInput(attrs={'oninput':"positive(document.getElementById(\'id_quantity\'))"}),
+            'unit_price': forms.NumberInput(attrs={'oninput':"positive(document.getElementById(\'id_unit_price\'))"}),
         }

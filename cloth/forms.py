@@ -36,8 +36,8 @@ class Cloth_in_stockForm(forms.ModelForm):
             'price': 'ราคา'            
         }
         widgets = {
-            'quantity':forms.NumberInput(attrs={'class':'form-control'}),
+            'quantity':forms.NumberInput(attrs={'class':'form-control','oninput':"positive(document.getElementById(\'id_quantity\'))"}),
             'cloth_type':forms.Select(attrs={'class':'form-control'}),
             'color':forms.Select(attrs={'class':'form-control'}),
-            'price':forms.NumberInput(attrs={'class':'form-control'}),
+            'price':forms.NumberInput(attrs={'class':'form-control','oninput':"positive(document.getElementById(\'id_price\'))"}),
         }

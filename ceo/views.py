@@ -7,3 +7,8 @@ from django.contrib.auth.decorators import login_required
 def index(request):
     context = {}
     return render(request, 'ceo/index.html', context=context)
+
+def graph(request):
+    context = {}
+
+    return render(request, 'ceo/graph.html', context=context)
