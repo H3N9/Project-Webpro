@@ -5,6 +5,20 @@
     {% block desc %}
     {% endblock desc %}
     {% block table %}
+<<<<<<< HEAD
+        <form action="{%url 'cloth'%}" method="POST">
+            {%csrf_token%}
+            <div class="form-group">
+                <label>{{form.name.label}}</label>
+                {{form.name}}
+            </div> 
+            <div class="form-group">
+                <label>{{form.cloth_desc.label}}</label>
+                {{form.cloth_desc}}
+            </div>
+            <input style="width: 80px;" class="btn btn-success" value="ตกลง" type="submit">
+        </form>
+=======
     <table class="table table-striped">
         <thead>
             <tr>
@@ -25,4 +39,5 @@
         {% endfor %}
     </table>
     <button onclick="location.href='{%url 'clothAdd' %}'">เพิ่มผ้า</button>
+>>>>>>> bb98b34520fd03cb39d34d4cde901784e413be41
     {% endblock table %}

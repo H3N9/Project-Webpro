@@ -1,21 +1,42 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
+<div class="container-fluid">
+
 
     <div class='row'>
 
         <div id='employee' class='box-role col-lg-4 sm-12' onclick="location.href='{%url 'showEmployee' %}'">
-
+            <img  style="width: 50%;
+            position: relative;;
+            top:50%;
+            left:50%;
+            margin-left:-25%;
+            margin-top:-25%;"
+             src="{% static 'img/team.png' %}" alt="">
         </div>
 
         <div id='account' class='box-role col-lg-4 sm-12' onclick="location.href='{%url 'account' %}'">
-
+            <img  style="width: 50%;
+            position: relative;;
+            top:50%;
+            left:50%;
+            margin-left:-25%;
+            margin-top:-25%;"
+             src="{% static 'img/accounting.png' %}" alt="">
         </div>
 
         <div id='cloth' class='box-role col-lg-4 sm-12' onclick="location.href='{%url 'stock' %}'">
-
+            <img  style="width: 50%;
+                    position: relative;;
+                    top:50%;
+                    left:50%;
+                    margin-left:-25%;
+                    margin-top:-25%;"
+                     src="{% static 'img/membrane.png' %}" alt="">
         </div>
 
     </div>
-
+</div>
 
 {% endblock content %}

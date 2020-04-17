@@ -6,12 +6,12 @@
     {% endblock text_head %}
 
     {% block desc %}
-        <button onclick="location.href='{%url 'revenue' %}'">เพิ่มรายรับ</button>
-        <button onclick="location.href='{%url 'expense' %}'">เพิ่มรายจ่าย</button>
+        <button class="btn btn-success" onclick="location.href='{%url 'revenue' %}'">เพิ่มรายรับ</button>
+        <button class="btn btn-danger" onclick="location.href='{%url 'expense' %}'">เพิ่มรายจ่าย</button>
     {% endblock desc %}
 
     {% block table %}
-        <table class="table table-striped">
+        <table class="table table-striped" style="margin-top: 10px;">
                 <thead>
                     <tr>
                         <th scope="col">วันที่</th>
