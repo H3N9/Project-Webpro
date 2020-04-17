@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <form action="{% url 'editEmployee' eid=employee.id%}" method="POST">
+        {%csrf_token%}
+        {{form}}
+
+        <input type="submit">
+    </form>
+
+{% endblock content %}

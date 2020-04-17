@@ -5,6 +5,7 @@
 {% block table %}
     <form action="{% url 'revenue' %}" method="POST">
         {%csrf_token%}
+<<<<<<< HEAD
         <div class="form-group">
             <div class="form-group">
                 <label for="formGroupExampleInput">{{form.amount.label}}</label>
@@ -28,6 +29,17 @@
             </div>
         </div>
         <input style="width: 100px;" class="btn btn-success" type="submit" name="" id="" value="ตกลง">
+=======
+          
+        <table>{{form}}</table>
+
+        <input type="submit" name="" id="">
+>>>>>>> bb98b34520fd03cb39d34d4cde901784e413be41
     </form>
+
+
+
+
+
 
 {% endblock table %}

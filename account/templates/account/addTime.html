@@ -8,5 +8,35 @@
         <input type="submit" name="" value="เพิ่มเวลา">
     </form>
 
+    <script>
+            function setRequired(x) {
+                if(x==1){
+                    var fbn = document.querySelector('#id_from_beforenoon');
+                    var tbn = document.querySelector('#id_to_beforenoon');
+                    if(fbn.value.length > 0 || tbn.value.length > 0){
+                        fbn.setAttribute('required','');
+                        tbn.setAttribute('required','');
+                    }
+                    else{
+                        fbn.removeAttribute('required');
+                        tbn.removeAttribute('required');
+                    }
+                }//1 is mean before noon set Required
+                else if(x==2){
+                    var fan = document.querySelector('#id_from_afternoon');
+                    var tan = document.querySelector('#id_to_afternoon');
+                    if(fan.value.length > 0 || tan.value.length > 0){
+                        fan.setAttribute('required','');
+                        tan.setAttribute('required','');
+                    }
+                    else{
+                        fan.removeAttribute('required');
+                        tan.removeAttribute('required');
+                    }
+                }
+            }
+        
+        
+        </script>
 
 {% endblock content %}

@@ -11,9 +11,7 @@ class Employee(models.Model):
     rating_wage_per_hour = models.FloatField()
 
 class Working_time(models.Model):
-    class Meta:
-        unique_together = [['date', 'employee']]
-    date = models.DateField(primary_key=True)
+    date = models.DateField()
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
     from_beforenoon = models.TimeField(null=True, blank=True)
     to_beforenoon = models.TimeField(null=True,blank=True)
@@ -22,11 +20,13 @@ class Working_time(models.Model):
     normal_wage = models.FloatField()
     ot_wage = models.FloatField()
     total_wage = models.FloatField()
+    class Meta:
+        unique_together = ['date', 'employee']
     
 
 class Expense(models.Model):
     amount = models.FloatField()
-    date = models.DateField()
+    date = models.DateField(auto_now=True)
     description = models.TextField(null=True)
     type_expense = models.CharField(max_length=1,choices=[('1','paid_salary'),('2','others')])
 
@@ -38,23 +38,28 @@ class Paid_salary(models.Model):
 
 class Customer(models.Model):
     name = models.CharField(max_length=255)
-    contact = models.CharField(max_length=10)
-    address = models.TextField()
+    contact = models.CharField(max_length=10, null=True)
+    address = models.TextField(null=True)
+
+    def __str__(self):
+        return self.name
+    
 
 class Revenue(models.Model):
     amount = models.FloatField()
+    types = [('1','ขายผ้าจากคลัง'),('2','รับจ้างย้อม')]
     type_revenue = models.CharField(
-        choices=[('1','ขายผ้าจากคลัง'),('2','รับจ้างย้อม')],max_length=1)
-    date = models.DateField()
+        choices=types,max_length=1)
+    date = models.DateField(auto_now=True)
     description = models.TextField(null=True)
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True)
 
 class Selling(models.Model):
     revenue = models.OneToOneField(Revenue, primary_key=True, on_delete=models.CASCADE)
 
 class Sell_list(models.Model):
     selling_revenue = models.ForeignKey(Selling, on_delete=models.CASCADE)
-    list_no = models.IntegerField(primary_key=True)
+    list_no = models.AutoField(primary_key=True)
     quantity = models.FloatField()
     unit_price = models.FloatField()
     cloth_in_stock = models.ForeignKey('cloth.Cloth_in_stock', on_delete=models.CASCADE)
@@ -63,9 +68,9 @@ class Engaging(models.Model):
     revenue = models.OneToOneField(Revenue, primary_key=True, on_delete=models.CASCADE)
 
 class Engage_list(models.Model):
-    engaging_revenue = models.ForeignKey(Selling, on_delete=models.CASCADE)
-    list_no = models.IntegerField(primary_key=True)
+    engaging_revenue = models.ForeignKey(Engaging, on_delete=models.CASCADE)
+    list_no = models.AutoField(primary_key=True)
     quantity = models.FloatField()
     unit_price = models.FloatField()
-    cloth_in_stock = models.ForeignKey('cloth.Cloth_in_stock', on_delete=models.CASCADE)
-    color = models.ForeignKey('cloth.Color', on_delete=models.CASCADE)
+    cloth_type = models.ForeignKey('cloth.Cloth_type', on_delete=models.DO_NOTHING, null=True)
+    color = models.ForeignKey('cloth.Color', on_delete=models.DO_NOTHING, null=True)

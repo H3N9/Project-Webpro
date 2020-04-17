@@ -6,8 +6,26 @@
 
     {% block desc %}
         <h1>{{employee.fname}}</h1>
-    {% endblock desc %}
+        <form action="{% url 'detail' eid=employee.id%}" method="POST">
+            {%csrf_token%}
+            {{form}}
+            <p>ทั้งหมด: {{total}}</p>
+            <input type="submit" value="ค้นหา">
+        </form>
+        <button onclick="location.href='{%url 'editEmployee' eid=employee.id %}'">แก้ไขข้อมูล</button>
+        {%if paid%}
+        <form action="{%url 'paidSalary' eid=employee.id %}" method='POST'>
+            {%csrf_token%}
+            <input type="hidden" name='st' value="{{st}}">
+            <input type="hidden" name='ed' value="{{ed}}">
+            <input type="hidden", name='total' value="{{total}}">
+            <input type="submit" value='จ่ายเงิน'>
 
+        </form>
+        {%endif%} 
+        
+    {% endblock desc %}
+    
     {% block table %}
          <table class="table table-striped">
                 <thead>

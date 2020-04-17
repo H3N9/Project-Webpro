@@ -20,6 +20,14 @@
                         <th scope="col">รายจ่าย</th>
                       </tr>
                 </thead>
+                {%for revenue in revenues%}
+                    <tr>
+                        <td>{{revenue.date}}</td>
+                        <td>{{revenue.description}}</td>
+                        <td>{{revenue.amount}}</td>
+                        <td></td>
+                    </tr>
+                {%endfor%}
                 {%for expense in expenses%}
                     <tr>
                         <td>{{expense.date}}</td>
@@ -29,7 +37,7 @@
                     </tr>
                 {%endfor%}
         </table>
-
+        <button onclick="location.href='{%url 'customer' %}'">รายชื่อลูกค้า</button>
     {% endblock table %}
 
 
