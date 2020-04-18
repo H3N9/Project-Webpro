@@ -1,10 +1,24 @@
-{% extends 'base.html' %}
-{% block content %}
+{% extends 'base-box.html' %}
+    {% block text_head %}
+        เพิ่มลูกค้า
+    {% endblock text_head %}
+{% block table %}
 
     <form action="{% url 'addCustomer' %}" method="POST">
         {%csrf_token%}
-        {{form}}
-        <input type="submit" value='เพิ้มลูกค้า'> 
+            <div class="form-group"> 
+                <label>{{form.name.label}}</label>
+                {{form.name}}
+            </div>
+            <div class="form-group">
+                <label>{{form.contact.label}}</label>
+                {{form.contact}}
+            </div>
+            <div class="form-group">
+                <label>{{form.address.label}}</label>
+                {{form.address}}
+            </div>
+        <input class="btn btn-success" type="submit" value='เพิ่มลูกค้า'> 
     </form>
 
-{% endblock content %}
+{% endblock table %}

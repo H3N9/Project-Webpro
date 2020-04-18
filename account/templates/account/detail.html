@@ -8,16 +8,22 @@
     {% block desc %}
         <h1>{{employee.fname}}</h1>
 
-        <button onclick="location.href='{%url 'editEmployee' eid=employee.id %}'">แก้ไขข้อมูล</button>
+        <button class="btn btn-secondary" onclick="location.href='{%url 'editEmployee' eid=employee.id %}'">แก้ไขข้อมูล</button>
         <h3>เลือกวันจ่ายเงิน</h3>
         <form action="{% url 'detail' eid=employee.id%}" method="POST">
             {%csrf_token%}
-            {{form}}
-            <input type="submit" value="เลือก">
-            
-            
-        </form>
-        
+            <div class="form-row"> 
+                <div class="col">
+                    <label for="formGroupExampleInput">{{form.start_date.label}}</label>
+                    {{form.start_date}}
+                </div>
+                <div class="col">
+                    <label for="formGroupExampleInput">{{form.end_date.label}}</label>
+                {{form.end_date}}
+                </div>
+            </div>
+            <input style="margin-top:5px;" class="btn btn-primary" type="submit" value="เลือก">            
+        </form>        
         <p>ทั้งหมด: {{total}}</p>
         {%if paid%}
         <form action="{%url 'paidSalary' eid=employee.id %}" method='POST'>
@@ -68,7 +74,7 @@
                 {% endfor %}
 
             </table>
-            <button onclick="location.href='{%url 'addTime' eid=employee.id %}'">เพิ่มเวลาการทำงาน</button>
+            <button class="btn btn-success" onclick="location.href='{%url 'addTime' eid=employee.id %}'">เพิ่มเวลาการทำงาน</button>
 
             <!--<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
             <script>

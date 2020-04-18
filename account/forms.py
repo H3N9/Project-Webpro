@@ -25,21 +25,19 @@ class EmployeeForm(forms.ModelForm):
 
 class Working_timeForm(forms.ModelForm):
     from_afternoon = forms.TimeField(required=False, 
-        widget=forms.TimeInput(attrs={'type':'time', 'oninput':'setRequired(2)'}), 
+        widget=forms.TimeInput(attrs={'type':'time', 'oninput':'setRequired(2)', 'class': 'form-control'}), 
         label='เวลาเริ่มงานบ่าย')
 
     to_afternoon = forms.TimeField(required=False, 
-        widget=forms.TimeInput(attrs={'type':'time', 'oninput':'setRequired(2)'}), 
+        widget=forms.TimeInput(attrs={'type':'time', 'oninput':'setRequired(2)', 'class': 'form-control'}), 
         label='เวลาเลิกงานบ่าย')
 
     from_beforenoon = forms.TimeField(required=False, 
-        widget=forms.TimeInput(attrs={'type':'time', 'oninput':'setRequired(1)'}), 
+        widget=forms.TimeInput(attrs={'type':'time', 'oninput':'setRequired(1)', 'class': 'form-control'}), 
         label='เวลาเริ่มงานเช้า')
     to_beforenoon = forms.TimeField(required=False, 
-        widget=forms.TimeInput(attrs={'type':'time', 'oninput':'setRequired(1)'}), 
+        widget=forms.TimeInput(attrs={'type':'time', 'oninput':'setRequired(1)', 'class': 'form-control'}), 
         label='เวลาเลิกงานเช้า')
-
-
     class Meta:
         model = models.Working_time
         exclude = ['employee', 'total_wage', 'normal_wage','ot_wage']
@@ -47,7 +45,7 @@ class Working_timeForm(forms.ModelForm):
             'date': 'วันที่'
         }
         widgets = {
-            'date': forms.DateInput(attrs={'type': 'date'}),
+            'date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
         }
     
     def clean(self):
@@ -119,8 +117,8 @@ class Paid_salaryForm(forms.ModelForm):
             'end_date':'จนถึง',
         }
         widgets = {
-            'start_date': forms.DateInput(attrs={'type': 'date'}),
-            'end_date': forms.DateInput(attrs={'type': 'date'}),
+            'start_date': forms.DateInput(attrs={'type': 'date', 'class':'form-control'}),
+            'end_date': forms.DateInput(attrs={'type': 'date', 'class':'form-control'}),
         }
     def clean(self):
         clean_data = super().clean()
@@ -137,6 +135,11 @@ class CustomerForm(forms.ModelForm):
             'name':'ชื่อลูกค้า',
             'contact':'เบอร์ติดต่อ',
             'address':'ที่อยู่',
+        }
+        widgets = {
+            'name': forms.DateInput(attrs={'class':'form-control'}),
+            'contact': forms.DateInput(attrs={'class':'form-control'}),
+            'address': forms.DateInput(attrs={'class':'form-control'}),
         }
 
 class Sell_listForm(forms.ModelForm):

@@ -1,11 +1,33 @@
-{% extends 'base.html' %}
-{% block content %}
-
-
+{% extends 'base-box.html' %}
+    {% block text_head %}
+        กรอกเวลาพนักงาน
+    {% endblock text_head %}
+{% block table %}
     <form action="{%url 'addTime' eid=eid%}" method='POST'>
         {%csrf_token%}
-        <table>{{formTime}}</table>
-        <input type="submit" name="" value="เพิ่มเวลา">
+        <label>{{formTime.date.label}}</label>
+        {{formTime.date}}
+        <div class="form-row"> 
+            <div class="col">
+                <label>{{formTime.from_afternoon.label}}</label>
+                {{formTime.from_afternoon}}
+            </div>
+            <div class="col">
+                <label>{{formTime.to_afternoon.label}}</label>
+                {{formTime.to_afternoon}}
+            </div>                 
+         </div>
+         <div class="form-row"> 
+            <div class="col">
+                <label>{{formTime.from_beforenoon.label}}</label>
+                {{formTime.from_beforenoon}}
+            </div>
+            <div class="col">
+                <label>{{formTime.to_beforenoon.label}}</label>
+                {{formTime.to_beforenoon}}
+            </div>                 
+        </div>
+        <input class="btn btn-success" style="margin-top:10px" type="submit" name="" value="เพิ่มเวลา">
     </form>
 
     <script>
@@ -39,4 +61,4 @@
         
         </script>
 
-{% endblock content %}
+{% endblock table %}
