@@ -208,6 +208,8 @@ def revenue(request):
                     cloth.quantity = cloth.quantity-sell_form['quantity']
                     cloth.save()
                     return redirect('account')
+                else:
+                    revenue_form = RevenueForm(request.POST)
             elif revenue_form['type_revenue'] == '2':
                 engage_form = Engage_listForm(request.POST)
                 if engage_form.is_valid():
@@ -228,6 +230,8 @@ def revenue(request):
                         color=engage_form['color']
                     )
                     return redirect('account')
+                else:
+                    revenue_form = RevenueForm(request.POST)
     context['revenue'] = revenue_form
     context['sell'] = sell_form
     context['engage'] = engage_form

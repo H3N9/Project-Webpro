@@ -9,7 +9,7 @@
         <div class="form-group">
             <div class="form-group">
                 <label for="{{revenue.amount.id_for_label}}">{{revenue.amount.label}}</label>
-                <input type='number' value={{revenue.amount.value}} id='revenue.amount.id_forlabel'>
+                {{revenue.amount}}
             </div>
             <div class="form-group">
                 <label for="{{revenue.type_revenue.id_for_label}}">{{revenue.type_revenue.label}}</label>
@@ -86,7 +86,7 @@
                 sell.innerHTML = ""
             }
         }
-        chooseForm()
+        chooseForm(document.getElementById('id_type_revenue').value)
     
     
     </script>
