@@ -167,7 +167,7 @@ def expense(request):
             data = form.cleaned_data
             add = Expense.objects.create(
                 amount=data['amount'],
-                date=data['date'],
+                date=datetime.now(),
                 description=data['description'],
                 type_expense='2',
             )
@@ -179,22 +179,58 @@ def expense(request):
 @login_required
 def revenue(request):
     context = {}
-    form = RevenueForm()
+    revenue_form = RevenueForm()
+    sell_form = Sell_listForm()
+    engage_form = Engage_listForm()
     if request.method=='POST':
-        form = RevenueForm(request.POST)
-        if form.is_valid():
-            data = form.cleaned_data
-            revenue = Revenue.objects.create(
-                amount=data['amount'],
-                type_revenue=data['type_revenue'],
-                description=data['description'],
-                customer=data['customer']
-            )
-            if data['type_revenue'] == '1':
-                return redirect('/account/revenue/sell/%d/'%revenue.id)
-            elif data['type_revenue'] == '2':
-                return redirect('/account/revenue/engage/%d/'%revenue.id)
-    context['form'] = form
+        revenue_form = RevenueForm(request.POST)
+        if revenue_form.is_valid():
+            revenue_form = revenue_form.cleaned_data
+            if revenue_form['type_revenue'] == '1':
+                sell_form = Sell_listForm(request.POST)
+                if sell_form.is_valid():
+                    sell_form = sell.cleaned_data
+                    revenue = Revenue.objects.create(
+                        amount=revenue_form['amount'],
+                        date=datetime.now(),
+                        type_revenue=revenue_form['type_revenue'],
+                        description=revenue_form['description'],
+                        customer=revenue_form['customer']
+                    )
+                    selling = Selling.objects.create(revenue=revenue)
+                    sell_list = Sell_list.objects.create(
+                        selling_revenue=selling,
+                        quantity=sell_form['quantity'],
+                        unit_price=sell_form['unit_price'],
+                        cloth_in_stock=sell_form['cloth_in_stock']
+                    )
+                    cloth = sell_form['cloth_in_stock']
+                    cloth.quantity = cloth.quantity-sell_form['quantity']
+                    cloth.save()
+                    return redirect('account')
+            elif revenue_form['type_revenue'] == '2':
+                engage_form = Engage_listForm(request.POST)
+                if engage_form.is_valid():
+                    engage_form = engage_form.cleaned_data
+                    revenue = Revenue.objects.create(
+                        amount=revenue_form['amount'],
+                        date=datetime.now(),
+                        type_revenue=revenue_form['type_revenue'],
+                        description=revenue_form['description'],
+                        customer=revenue_form['customer']
+                    )
+                    engaging = Engaging.objects.create(revenue=revenue)
+                    engage_list = Engage_list.objects.create(
+                        engaging_revenue=engaging,
+                        quantity=engage_form['quantity'],
+                        unit_price=engage_form['unit_price'],
+                        cloth_type=engage_form['cloth_type'],
+                        color=engage_form['color']
+                    )
+                    return redirect('account')
+    context['revenue'] = revenue_form
+    context['sell'] = sell_form
+    context['engage'] = engage_form
     return render(request, 'account/revenue.html', context=context)
 
 @login_required
@@ -258,48 +294,4 @@ def editEmployee(request, eid):
     context['form'] = form
     context['employee'] = employee
     return render(request, 'account/editEmployee.html', context=context)
-
-def sell(request, aid):
-    context = {}
-    revenue = Revenue.objects.get(pk=aid)
-    form = Sell_listForm()
-    if request.method == 'POST':
-        form = Sell_listForm(request.POST)
-        if form.is_valid():
-            data = form.cleaned_data
-            selling = Selling.objects.create(revenue=revenue)
-            add = Sell_list.objects.create(
-                selling_revenue=selling,
-                quantity=data['quantity'],
-                unit_price=data['unit_price'],
-                cloth_in_stock=data['cloth_in_stock']
-            )
-            cloth = data['cloth_in_stock']
-            cloth.quantity = cloth.quantity-data['quantity']
-            cloth.save()
-            return redirect('account')
-    context['revenue'] = revenue
-    context['form'] = form
-    return render(request, 'account/sell.html', context=context)
-
-def engage(request, aid):
-    context = {}
-    form = Engage_listForm()
-    revenue = Revenue.objects.get(pk=aid)
-    if request.method == 'POST':
-        form = Engage_listForm(request.POST)
-        if form.is_valid():
-            data = form.cleaned_data
-            engaging = Engaging.objects.create(revenue=revenue)
-            add = Engage_list.objects.create(
-                engaging_revenue=engaging,
-                quantity=data['quantity'],
-                unit_price=data['unit_price'],
-                cloth_type=data['cloth_type'],
-                color=data['color']
-            )
-            return redirect('account')
-    context['revenue'] = revenue
-    context['form'] = form
-    return render(request, 'account/engage.html', context=context)
 

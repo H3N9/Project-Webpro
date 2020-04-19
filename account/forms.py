@@ -75,12 +75,10 @@ class ExpenseForm(forms.ModelForm):
         model = models.Expense
         exclude = ['type_expense']
         labels = {
-            'date': 'วันที่',
             'amount':'จำนวนเงิน',
             'description':'รายละเอียด',
         }
         widgets = {
-            'date': forms.DateInput(attrs={'type': 'date', 'class':'form-control'}),
             'amount':forms.NumberInput(attrs={ 'class':'form-control','oninput':"positive(document.getElementById(\'id_amount\'))"}),
             'description':forms.Textarea(attrs={ 'class':'form-control', 'rows':'3'})
         }
@@ -93,18 +91,16 @@ class RevenueForm(forms.ModelForm):
         model = models.Revenue
         fields = '__all__'
         labels = {
-            'date': 'วันที่',
             'amount':'จำนวนเงิน',
             'description':'รายละเอียด',
             'customer':'ลูกค้า',
             'type_revenue':'ประเภทรายรับ',
         }
         widgets = {
-            'date': forms.DateInput(attrs={'type': 'date', 'class':'form-control'}),
             'amount':forms.NumberInput(attrs={ 'class':'form-control','oninput':"positive(document.getElementById(\'id_amount\'))"}),
             'description':forms.Textarea(attrs={ 'class':'form-control', 'rows':'3'}),
             'customer':forms.Select(attrs={ 'class':'form-control'}),
-            'type_revenue':forms.Select(attrs={ 'class':'form-control'})
+            'type_revenue':forms.Select(attrs={ 'class':'form-control','onchange':"chooseForm(document.getElementById(\'id_type_revenue\').value)"})
         }
 
 

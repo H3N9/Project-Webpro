@@ -1,7 +1,30 @@
 {% extends 'base-box.html' %}
 {% block text-head %}
+<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js'></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+
+
 {% endblock text-head %}
+
+
 {% block desc %}
+
 {% endblock desc %}
+
+
 {% block table %}
+
+
+
+<script>
+
+    axios.get('/employee/detail/api/'+eid+'/')
+    .then(function(response){
+
+
+    }
+
+
+</script>
 {% endblock table %}

@@ -5,34 +5,91 @@
 {% block table %}
     <form action="{% url 'revenue' %}" method="POST">
         {%csrf_token%}
-
+        {{revenue.non_field_errors}}
         <div class="form-group">
             <div class="form-group">
-                <label for="formGroupExampleInput">{{form.amount.label}}</label>
-                {{form.amount}}
+                <label for="{{revenue.amount.id_for_label}}">{{revenue.amount.label}}</label>
+                <input type='number' value={{revenue.amount.value}} id='revenue.amount.id_forlabel'>
             </div>
             <div class="form-group">
-                <label for="formGroupExampleInput">{{form.type_revenue.label}}</label>
-                {{form.type_revenue}}
+                <label for="{{revenue.type_revenue.id_for_label}}">{{revenue.type_revenue.label}}</label>
+                {{revenue.type_revenue}}
             </div>
             <div class="form-group">
-                <label for="formGroupExampleInput">{{form.date.label}}</label>
-                {{form.date}}
+                <label for="{{revenue.date.id_for_label}}">{{revenue.date.label}}</label>
+                {{revenue.date}}
             </div>
             <div class="form-group">
-                <label for="formGroupExampleInput">{{form.description.label}}</label>
-                {{form.description}}
+                <label for="{{revenue.description.id_for_label}}">{{revenue.description.label}}</label>
+                {{revenue.description}}
             </div>
             <div class="form-group">
-                <label for="formGroupExampleInput">{{form.customer.label}}</label>
-                {{form.customer}}
+                <label for="{{revenue.customer.id_for_label}}">{{revenue.customer.label}}</label>
+                {{revenue.customer}}
             </div>
         </div>
+
+        <div class="form-group" id='selling'>
+        {{sell.non_field_errors}}
+            <div class="form-group">
+                <label for="{{sell.quantity.id_for_label}}">{{sell.quantity.label}}</label>
+                {{sell.quantity}}
+            </div>
+            <div class="form-group">
+                <label for="{{sell.unit_price.id_for_label}}">{{sell.unit_price.label}}</label>
+                {{sell.unit_price}}
+            </div>
+            <div class="form-group">
+                <label for="{{sell.cloth_in_stock.id_for_label}}">{{sell.cloth_in_stock.label}}</label>
+                {{sell.cloth_in_stock}}
+            </div>
+        </div>
+
+        <div class="form-group" id='engaging'>
+        {{engage.non_field_errors}}
+            <div class="form-group">
+                <label for="{{engage.quantity.id_for_label}}">{{engage.quantity.label}}</label>
+                {{engage.quantity}}
+            </div>
+            <div class="form-group">
+                <label for="{{engage.unit_price.id_for_label}}">{{engage.unit_price.label}}</label>
+                {{engage.unit_price}}
+            </div>
+            <div class="form-group">
+                <label for="{{engage.cloth_type.id_for_label}}">{{engage.cloth_type.label}}</label>
+                {{engage.cloth_type}}
+            </div>
+            <div class="form-group">
+                <label for="{{engage.color.id_for_label}}">{{engage.color.label}}</label>
+                {{engage.color}}
+            </div>
+        </div>
+
         <input style="width: 100px;" class="btn btn-success" type="submit" name="" id="" value="ตกลง">
     </form>
 
 
-
+    <script>
+        var sell = document.querySelector('#selling')
+        var engage = document.querySelector('#engaging')
+        var storeSellHTML = sell.innerHTML
+        var storeEngageHTML = engage.innerHTML
+        sell.innerHTML = ""
+        engage.innerHTML = ""
+        function chooseForm(x){
+            if(x==1){
+                sell.innerHTML = storeSellHTML
+                engage.innerHTML = ""
+            }
+            else if(x==2){
+                engage.innerHTML = storeEngageHTML
+                sell.innerHTML = ""
+            }
+        }
+        chooseForm()
+    
+    
+    </script>
 
 
 

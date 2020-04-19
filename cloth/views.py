@@ -6,20 +6,19 @@ from .models import Cloth_in_stock, Cloth_type, Color
 
 def stock(request):
     context = {}
-    stocks = Cloth_in_stock.objects.all()
-
+    stocks = Cloth_in_stock.objects.all().order_by('-quantity')
     context['stocks'] = stocks
     return render(request, 'cloth/stock.html', context=context)
 
 def color(request):
     context = {}
-    colors = Color.objects.all()
+    colors = Color.objects.all().order_by('name')
     context['colors'] = colors
     return render(request, 'cloth/color.html', context=context)
 
 def cloth(request):
     context = {}
-    cloths = Cloth_type.objects.all()
+    cloths = Cloth_type.objects.all().order_by('name')
     context['cloths'] = cloths
     return render(request, 'cloth/cloth.html', context=context)
 
@@ -31,7 +30,7 @@ def clothAdd(request):
         if form.is_valid():
             data = form.cleaned_data
             add = Cloth_type.objects.create(name=data['name'], cloth_desc=data['cloth_desc'])
-            return redirect('stock')
+            return redirect('cloth')
     context['form'] = form
     return render(request, 'cloth/clothAdd.html', context=context)
 
