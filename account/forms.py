@@ -148,8 +148,9 @@ class Sell_listForm(forms.ModelForm):
             'cloth_in_stock':'ผ้าจากในคลัง',
         }
         widgets = {
-            'quantity':forms.NumberInput(attrs={'oninput':"positive(document.getElementById(\'id_quantity\'))"}),
-            'unit_price': forms.NumberInput(attrs={'oninput':"positive(document.getElementById(\'id_unit_price\'))"}),
+            'quantity':forms.NumberInput(attrs={'oninput':"positive(document.getElementById(\'id_quantity\'))", 'class':'form-control'}),
+            'unit_price': forms.NumberInput(attrs={'oninput':"positive(document.getElementById(\'id_unit_price\'))", 'class':'form-control'}),
+            'cloth_in_stock': forms.Select(attrs={ 'class':'form-control'})
         }
 
     def clean(self):
@@ -169,6 +170,8 @@ class Engage_listForm(forms.ModelForm):
             'color':'สี',
         }
         widgets = {
-            'quantity': forms.NumberInput(attrs={'oninput':"positive(document.getElementById(\'id_quantity\'))"}),
-            'unit_price': forms.NumberInput(attrs={'oninput':"positive(document.getElementById(\'id_unit_price\'))"}),
+            'quantity': forms.NumberInput(attrs={'oninput':"positive(document.getElementById(\'id_quantity\'))", 'class':'form-control'}),
+            'unit_price': forms.NumberInput(attrs={'oninput':"positive(document.getElementById(\'id_unit_price\'))", 'class':'form-control'}),
+            'cloth_type': forms.Select(attrs={ 'class':'form-control'}),
+            'color': forms.Select(attrs={ 'class':'form-control'})
         }
