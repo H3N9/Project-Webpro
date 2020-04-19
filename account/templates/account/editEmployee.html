@@ -1,11 +1,15 @@
-{% extends 'base.html' %}
-{% block content %}
+{% extends 'base-box.html' %}
+
+    {% block text_head %}
+        {{employee.fname}} {{employee.lname}}
+    {% endblock text_head %}
+
+{% block desc %}
 
     <form action="{% url 'editEmployee' eid=employee.id%}" method="POST">
         {%csrf_token%}
         {{form}}
-
-        <input type="submit">
+        <input class="btn btn-success" type="submit" value="ตกลง" style="margin-top: 20px; width: 80px;">
     </form>
 
-{% endblock content %}
+{% endblock desc %}
