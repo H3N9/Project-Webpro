@@ -14,5 +14,4 @@ urlpatterns = [
     path('customer/', views.customer, name='customer'),
     path('customer/add/', views.addCustomer, name='addCustomer'),
     path('employee/edit/<int:eid>/', views.editEmployee, name='editEmployee'),
-    path('employee/detail/api/<int:eid>/', views.sendDataAPI, name='sendDataAPI'),
 ]

@@ -79,13 +79,13 @@ def detail(request, eid):
     context['eid'] = eid
     return render(request, 'account/detail.html', context=context)
 
-@csrf_exempt
+"""@csrf_exempt
 def sendDataAPI(request, eid):
     
     if request.method == 'GET':
         employee = Employee.objects.get(pk=eid)
         serializer = EmployeeSerializer(instance=employee)
-        return JsonResponse(serializer.data, status=200, safe=False)
+        return JsonResponse(serializer.data, status=200, safe=False)"""
 
 @login_required
 def deleteEmployee(request, eid):

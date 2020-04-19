@@ -62,7 +62,7 @@ class Sell_list(models.Model):
     list_no = models.AutoField(primary_key=True)
     quantity = models.FloatField()
     unit_price = models.FloatField()
-    cloth_in_stock = models.ForeignKey('cloth.Cloth_in_stock', on_delete=models.CASCADE)
+    cloth_in_stock = models.ForeignKey('cloth.Cloth_in_stock', on_delete=models.CASCADE, related_name='cloth_sell')
 
 class Engaging(models.Model):
     revenue = models.OneToOneField(Revenue, primary_key=True, on_delete=models.CASCADE)
@@ -72,5 +72,5 @@ class Engage_list(models.Model):
     list_no = models.AutoField(primary_key=True)
     quantity = models.FloatField()
     unit_price = models.FloatField()
-    cloth_type = models.ForeignKey('cloth.Cloth_type', on_delete=models.DO_NOTHING, null=True)
-    color = models.ForeignKey('cloth.Color', on_delete=models.DO_NOTHING, null=True)
+    cloth_type = models.ForeignKey('cloth.Cloth_type', on_delete=models.DO_NOTHING, null=True, related_name='cloth_engage')
+    color = models.ForeignKey('cloth.Color', on_delete=models.DO_NOTHING, null=True, related_name='color_engage')

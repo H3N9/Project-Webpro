@@ -1,7 +1,6 @@
 {% extends 'base-box.html' %}
 {% block text-head %}
-<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js'></script>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
 
 
 
@@ -9,22 +8,108 @@
 
 
 {% block desc %}
-
+<button onclick="setChart('color')">Color</button>
+<button onclick="setChart('cloth')">Cloth</button>
 {% endblock desc %}
 
 
 {% block table %}
 
+<canvas id="myChart" width="400" height="400"></canvas>
 
-
+<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js'></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
-
-    axios.get('/employee/detail/api/'+eid+'/')
-    .then(function(response){
-
-
+    //call API data form views in ceo
+    function setChart(name){
+        axios.get('/ceo/sendAPI/'+name+"/")
+        .then(function (response) {
+            var data = {}
+            data = response.data
+            drawChart(data, name)
+        })
     }
 
+    // drawChart but it has bugs when you click it will be add chart
+    function drawChart(data, name) {
+        var listQuantity = []
+        if (name=='cloth'){ //loop in json for add data to chartObject
+            for(var cloth = 0;cloth < data.length;cloth++){
+                var cloth_type = data[cloth]
+                var chartObject = {name:"",quantity:0}
+                chartObject['name'] = cloth_type.name
+                for(var stock = 0;stock < cloth_type.cloth_stock.length;stock++){
+                    var cloth_stock = cloth_type.cloth_stock[stock]
+                    for(var sell = 0;sell < cloth_stock.cloth_sell.length;sell++){
+                        var sell_list = cloth_stock.cloth_sell[sell]
+                        chartObject['quantity'] += sell_list.quantity
 
+                    }
+                }
+                listQuantity.push(chartObject)
+            }
+        }
+        else if(name=='color'){
+            console.log(data)
+            for(var color = 0;color < data.length;color++){
+                var color_name = data[color]
+                var chartObject = {name:"",quantity:0}
+                chartObject['name'] = color_name.name
+                for(var stock = 0;stock < color_name.color_stock.length;stock++){
+                    var color_stock = color_name.color_stock[stock]
+                    for(var sell = 0;sell < color_stock.cloth_sell.length;sell++){
+                        var sell_list = color_stock.cloth_sell[sell]
+                        chartObject['quantity'] += sell_list.quantity
+
+                    }
+                }
+                listQuantity.push(chartObject)
+            }
+        }
+        var quantity = [] // amount of bar graph
+        var labels = [] // name of bar graph
+        for(var i=0;i<listQuantity.length;i++){
+            labels.push(listQuantity[i].name)
+            quantity.push(listQuantity[i].quantity)
+        }
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar', // you can change type to [line, bar, polar, rader, pie, others] link https://www.chartjs.org/docs/latest/charts/
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: '# of Votes',
+                    data: quantity,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    }
+    setChart('cloth')
 </script>
 {% endblock table %}
