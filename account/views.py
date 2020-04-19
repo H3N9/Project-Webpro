@@ -171,7 +171,7 @@ def expense(request):
                 description=data['description'],
                 type_expense='2',
             )
-            return redirect('expense')
+            return redirect('account')
     context['form'] = form
     return render(request, 'account/expense.html', context=context)
 
@@ -248,7 +248,7 @@ def paidSalary(request, eid):
         expense = Expense.objects.create(
             amount=total,
             date=datetime.now(),
-            description='จ่ายเงินลูกจ้าง',
+            description='จ่ายเงินลูกจ้าง %s %s'%(employee.fname, employee.lname),
             type_expense='1',
         )
         paid = Paid_salary.objects.create(
