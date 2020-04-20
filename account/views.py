@@ -189,7 +189,7 @@ def revenue(request):
             if revenue_form['type_revenue'] == '1':
                 sell_form = Sell_listForm(request.POST)
                 if sell_form.is_valid():
-                    sell_form = sell.cleaned_data
+                    sell_form = sell_form.cleaned_data
                     revenue = Revenue.objects.create(
                         amount=revenue_form['amount'],
                         date=datetime.now(),
