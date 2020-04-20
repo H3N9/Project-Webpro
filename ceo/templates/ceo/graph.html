@@ -1,16 +1,20 @@
 {% extends 'base-box.html' %}
-{% block text-head %}
-
-
-
-
-{% endblock text-head %}
-
-
-{% block desc %}
-<button onclick="setChart('color')">Color</button>
-<button onclick="setChart('cloth')">Cloth</button>
-{% endblock desc %}
+    {% block text_head %}
+        <div class="row">
+            <div class="col">
+                <button onclick="change(0)" style="width: 100%;" class="btn btn-secondary">ข้อมูลการขาย</button>
+            </div>
+            <div class="col">
+                <button onclick="change(1)" style="width: 100%;" class="btn btn-dark">ข้อมูลการจ้างยอม</button>
+            </div>
+        </div>
+    {% endblock text_head %}
+    {% block desc %}
+    <button class="btn btn-info" id="mybtn1" onclick="setChart('color', 'sell')">Color</button>
+    <button class="btn btn-info" id="mybtn2" onclick="setChart('cloth', 'sell')">Cloth</button>
+    <button class="btn btn-info" id="mybtn3" style="display: none;" onclick="setChart('color', 'engage')">Color</button>
+    <button class="btn btn-info" id="mybtn4" style="display: none;" onclick="setChart('cloth', 'engage')">Cloth</button>
+    {% endblock desc %}
 
 
 {% block table %}
@@ -21,19 +25,19 @@
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
     //call API data form views in ceo
-    function setChart(name){
+    function setChart(name, type){
         axios.get('/ceo/sendAPI/'+name+"/")
         .then(function (response) {
+            // console.log(response.data)
             var data = {}
             data = response.data
-            drawChart(data, name)
+            drawChart(data, name, type)
         })
     }
-
     // drawChart but it has bugs when you click it will be add chart
-    function drawChart(data, name) {
+    function drawChart(data, name, type) {
         var listQuantity = []
-        if (name=='cloth'){ //loop in json for add data to chartObject
+        if (name=='cloth' && type == 'sell'){ //loop in json for add data to chartObject
             for(var cloth = 0;cloth < data.length;cloth++){
                 var cloth_type = data[cloth]
                 var chartObject = {name:"",quantity:0}
@@ -43,14 +47,13 @@
                     for(var sell = 0;sell < cloth_stock.cloth_sell.length;sell++){
                         var sell_list = cloth_stock.cloth_sell[sell]
                         chartObject['quantity'] += sell_list.quantity
-
                     }
                 }
                 listQuantity.push(chartObject)
             }
         }
-        else if(name=='color'){
-            console.log(data)
+        else if(name=='color' && type == 'sell'){
+            console.log(data)           
             for(var color = 0;color < data.length;color++){
                 var color_name = data[color]
                 var chartObject = {name:"",quantity:0}
@@ -62,6 +65,33 @@
                         chartObject['quantity'] += sell_list.quantity
 
                     }
+                }
+                listQuantity.push(chartObject)
+            }
+        }
+        else if(name=='color' && type == 'engage'){
+            console.log(data)
+            console.log('jjj')
+            for(var color = 0;color < data.length;color++){
+                var color_name = data[color]
+                var chartObject = {name:"",quantity:0}
+                chartObject['name'] = color_name.name
+                for(var stock = 0;stock < color_name.color_engage.length;stock++){
+                    var color_engage  = color_name.color_engage [stock]
+                    chartObject['quantity'] += color_engage['quantity']
+                }
+                listQuantity.push(chartObject)
+            }
+        }
+        else if(name=='cloth'  && type == 'engage'){
+            console.log(data)
+            for(var cloth = 0;cloth < data.length;cloth++){
+                var cloth_name = data[cloth]
+                var chartObject = {name:"",quantity:0}
+                chartObject['name'] = cloth_name.name
+                for(var stock = 0;stock < cloth_name.cloth_engage.length;stock++){
+                    var cloth_engage  = cloth_name.cloth_engage [stock]
+                    chartObject['quantity'] += cloth_engage['quantity']
                 }
                 listQuantity.push(chartObject)
             }
@@ -110,6 +140,33 @@
             }
         });
     }
-    setChart('cloth')
+    setChart('cloth', 'sell')
+    
+    function change(num){
+        var btn1 = document.getElementById("mybtn1");
+        var btn2 = document.getElementById("mybtn2");
+        var btn3 = document.getElementById("mybtn3");
+        var btn4 = document.getElementById("mybtn4");
+        if(num === 1){
+            btn1.style.display = "none"
+            btn2.style.display = "none"
+            btn3.style.display = "inline"
+            btn4.style.display = "inline"
+            setChart('cloth', 'engage')
+        }else{
+            btn1.style.display = "inline"
+            btn2.style.display = "inline"
+            btn3.style.display = "none"
+            btn4.style.display = "none"
+            setChart('cloth', 'sell')
+        }
+        // if (btn3.style.display === "none") {
+        //     btn3.style.display = "inline";
+        //     btn4.style.display = "inline";
+        // } else {
+        //     btn1.style.display = "none";
+        //     btn2.style.display = "none";
+        // }
+    }
 </script>
 {% endblock table %}
