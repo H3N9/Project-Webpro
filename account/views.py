@@ -180,6 +180,7 @@ def expense(request):
 @login_required
 def revenue(request):
     context = {}
+    amountForm = 1
     revenue_form = RevenueForm()
     sell_form = formset_factory(Sell_listForm, extra=10)
     engage_form = formset_factory(Engage_listForm, extra=10)
@@ -190,9 +191,8 @@ def revenue(request):
         if revenue_form.is_valid():
             revenue_form = revenue_form.cleaned_data
             if revenue_form['type_revenue'] == '1':
-                getFormSell = sell_formSet(request.POST)
-                if getFormSell.is_valid():
-                    
+                sell_data = sell_form(request.POST)
+                if sell_data.is_valid():
                     revenue = Revenue.objects.create(
                         amount=revenue_form['amount'],
                         date=datetime.now(),
@@ -201,7 +201,7 @@ def revenue(request):
                         customer=revenue_form['customer']
                     )
                     selling = Selling.objects.create(revenue=revenue)
-                    for sell_form in getFormSell:
+                    for sell_form in sell_data:
                         sell_form = sell_form.cleaned_data
                         sell_list = Sell_list.objects.create(
                             selling_revenue=selling,
@@ -215,10 +215,12 @@ def revenue(request):
                     return redirect('account')
                 else:
                     revenue_form = RevenueForm(request.POST)
+                    sell_formSet = sell_form(request.POST)
+                    amountForm = request.POST.get('amountForm')
             elif revenue_form['type_revenue'] == '2':
-                engage_form = Engage_listForm(request.POST)
-                if engage_form.is_valid():
-                    engage_form = engage_form.cleaned_data
+                engage_data = engage_form(request.POST)
+                if engage_data.is_valid():
+                    engage_data = engage_data.cleaned_data
                     revenue = Revenue.objects.create(
                         amount=revenue_form['amount'],
                         date=datetime.now(),
@@ -227,19 +229,22 @@ def revenue(request):
                         customer=revenue_form['customer']
                     )
                     engaging = Engaging.objects.create(revenue=revenue)
-                    engage_list = Engage_list.objects.create(
-                        engaging_revenue=engaging,
-                        quantity=engage_form['quantity'],
-                        unit_price=engage_form['unit_price'],
-                        cloth_type=engage_form['cloth_type'],
-                        color=engage_form['color']
-                    )
+                    for engage_form in engage_data:
+                        engage_list = Engage_list.objects.create(
+                            engaging_revenue=engaging,
+                            quantity=engage_form['quantity'],
+                            unit_price=engage_form['unit_price'],
+                            cloth_type=engage_form['cloth_type'],
+                            color=engage_form['color']
+                        )
                     return redirect('account')
                 else:
                     revenue_form = RevenueForm(request.POST)
+                    amountForm = request.POST.get('amountForm')
     context['revenue'] = revenue_form
     context['sells'] = sell_formSet
     context['engages'] = engage_formSet
+    context['amountForm'] = amountForm
     return render(request, 'account/revenue.html', context=context)
 
 @login_required
