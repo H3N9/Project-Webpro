@@ -1,6 +1,6 @@
 {% extends 'base-box.html' %}
     {% block text_head %}
-        <div class="row">
+        <div class="row m-auto">
             <div class="col">
                 <button onclick="change(0)" style="width: 100%;" class="btn btn-secondary">ข้อมูลการขาย</button>
             </div>
@@ -24,6 +24,7 @@
 <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js'></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
+    
     //call API data form views in ceo
     function setChart(name, type){
         axios.get('/ceo/sendAPI/'+name+"/")
@@ -31,11 +32,11 @@
             // console.log(response.data)
             var data = {}
             data = response.data
-            drawChart(data, name, type)
+            update(data, name, type)
         })
     }
     // drawChart but it has bugs when you click it will be add chart
-    function drawChart(data, name, type) {
+    function update(data, name, type) {
         var listQuantity = []
         if (name=='cloth' && type == 'sell'){ //loop in json for add data to chartObject
             for(var cloth = 0;cloth < data.length;cloth++){
@@ -52,8 +53,7 @@
                 listQuantity.push(chartObject)
             }
         }
-        else if(name=='color' && type == 'sell'){
-            console.log(data)           
+        else if(name=='color' && type == 'sell'){         
             for(var color = 0;color < data.length;color++){
                 var color_name = data[color]
                 var chartObject = {name:"",quantity:0}
@@ -70,8 +70,6 @@
             }
         }
         else if(name=='color' && type == 'engage'){
-            console.log(data)
-            console.log('jjj')
             for(var color = 0;color < data.length;color++){
                 var color_name = data[color]
                 var chartObject = {name:"",quantity:0}
@@ -84,7 +82,6 @@
             }
         }
         else if(name=='cloth'  && type == 'engage'){
-            console.log(data)
             for(var cloth = 0;cloth < data.length;cloth++){
                 var cloth_name = data[cloth]
                 var chartObject = {name:"",quantity:0}
@@ -102,71 +99,54 @@
             labels.push(listQuantity[i].name)
             quantity.push(listQuantity[i].quantity)
         }
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'bar', // you can change type to [line, bar, polar, rader, pie, others] link https://www.chartjs.org/docs/latest/charts/
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: '# of Votes',
-                    data: quantity,
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
+        chart.data.datasets[0].data = quantity
+        chart.data.labels = labels;
+        chart.update();
+}
+setChart('cloth', 'sell')
+
+
+
+
+
+var ctx = document.getElementById('myChart').getContext('2d');
+var chart = new Chart(ctx, {
+type: 'bar', // you can change type to [line, bar, polar, rader, pie, others] link https://www.chartjs.org/docs/latest/charts/
+data: {
+    labels: [],
+    datasets: [{
+        label: '# of Votes',
+        data: [],
+        backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)'
+        ],
+        borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+        ],
+        borderWidth: 1
+    }]
+},
+options: {
+    scales: {
+        yAxes: [{
+            ticks: {
+                beginAtZero: true
             }
-        });
+        }]
     }
-    setChart('cloth', 'sell')
-    
-    function change(num){
-        var btn1 = document.getElementById("mybtn1");
-        var btn2 = document.getElementById("mybtn2");
-        var btn3 = document.getElementById("mybtn3");
-        var btn4 = document.getElementById("mybtn4");
-        if(num === 1){
-            btn1.style.display = "none"
-            btn2.style.display = "none"
-            btn3.style.display = "inline"
-            btn4.style.display = "inline"
-            setChart('cloth', 'engage')
-        }else{
-            btn1.style.display = "inline"
-            btn2.style.display = "inline"
-            btn3.style.display = "none"
-            btn4.style.display = "none"
-            setChart('cloth', 'sell')
-        }
-        // if (btn3.style.display === "none") {
-        //     btn3.style.display = "inline";
-        //     btn4.style.display = "inline";
-        // } else {
-        //     btn1.style.display = "none";
-        //     btn2.style.display = "none";
-        // }
-    }
+}
+});
+
 </script>
+
 {% endblock table %}

@@ -299,3 +299,9 @@ def editEmployee(request, eid):
     context['employee'] = employee
     return render(request, 'account/editEmployee.html', context=context)
 
+def revenueDetail(request, aid):
+    context = {}
+    revenue = Revenue.objects.get(pk=aid)
+
+    
+    return render(request, 'account/revenueDetail.html', context=context)
