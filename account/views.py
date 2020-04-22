@@ -202,16 +202,17 @@ def revenue(request):
                     )
                     selling = Selling.objects.create(revenue=revenue)
                     for sell_form in sell_data:
-                        sell_form = sell_form.cleaned_data
-                        sell_list = Sell_list.objects.create(
-                            selling_revenue=selling,
-                            quantity=sell_form['quantity'],
-                            unit_price=sell_form['unit_price'],
-                            cloth_in_stock=sell_form['cloth_in_stock']
-                        )
-                        cloth = sell_form['cloth_in_stock']
-                        cloth.quantity = cloth.quantity-sell_form['quantity']
-                        cloth.save()
+                        if sell_form.cleaned_data.get('quantity'):
+                            if sell_form.is_valid():
+                                sell_list = Sell_list.objects.create(
+                                    selling_revenue=selling,
+                                    quantity=sell_form.cleaned_data['quantity'],
+                                    unit_price=sell_form.cleaned_data['unit_price'],
+                                    cloth_in_stock=sell_form.cleaned_data['cloth_in_stock']
+                                )
+                                cloth = sell_form.cleaned_data['cloth_in_stock']
+                                cloth.quantity = cloth.quantity-sell_form.cleaned_data['quantity']
+                                cloth.save()
                     return redirect('account')
                 else:
                     revenue_form = RevenueForm(request.POST)
@@ -220,7 +221,6 @@ def revenue(request):
             elif revenue_form['type_revenue'] == '2':
                 engage_data = engage_form(request.POST)
                 if engage_data.is_valid():
-                    engage_data = engage_data.cleaned_data
                     revenue = Revenue.objects.create(
                         amount=revenue_form['amount'],
                         date=datetime.now(),
@@ -230,6 +230,7 @@ def revenue(request):
                     )
                     engaging = Engaging.objects.create(revenue=revenue)
                     for engage_form in engage_data:
+                        engage_form = engage_data.cleaned_data
                         engage_list = Engage_list.objects.create(
                             engaging_revenue=engaging,
                             quantity=engage_form['quantity'],
