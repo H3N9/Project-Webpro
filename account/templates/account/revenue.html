@@ -30,60 +30,93 @@
         </div>
 
         <div class="form-group" id='selling'>
-        {{sell.non_field_errors}}
-            <div class="form-group">
-                <label for="{{sell.quantity.id_for_label}}">{{sell.quantity.label}}</label>
-                {{sell.quantity}}
+        {%for sell in sells %}
+            
+            <div class="form-group formsetSell">
+                {{sell.non_field_errors}}
+                <div class="form-group">
+                    <label for="{{sell.quantity.id_for_label}}">{{sell.quantity.label}}</label>
+                    {{sell.quantity}}
+                </div>
+                <div class="form-group">
+                    <label for="{{sell.unit_price.id_for_label}}">{{sell.unit_price.label}}</label>
+                    {{sell.unit_price}}
+                </div>
+                <div class="form-group">
+                    <label for="{{sell.cloth_in_stock.id_for_label}}">{{sell.cloth_in_stock.label}}</label>
+                    {{sell.cloth_in_stock}}
+                </div>
             </div>
-            <div class="form-group">
-                <label for="{{sell.unit_price.id_for_label}}">{{sell.unit_price.label}}</label>
-                {{sell.unit_price}}
-            </div>
-            <div class="form-group">
-                <label for="{{sell.cloth_in_stock.id_for_label}}">{{sell.cloth_in_stock.label}}</label>
-                {{sell.cloth_in_stock}}
-            </div>
+
+        {% endfor %}
         </div>
 
         <div class="form-group" id='engaging'>
-        {{engage.non_field_errors}}
-            <div class="form-group">
-                <label for="{{engage.quantity.id_for_label}}">{{engage.quantity.label}}</label>
-                {{engage.quantity}}
-            </div>
-            <div class="form-group">
-                <label for="{{engage.unit_price.id_for_label}}">{{engage.unit_price.label}}</label>
-                {{engage.unit_price}}
-            </div>
-            <div class="form-group">
-                <label for="{{engage.cloth_type.id_for_label}}">{{engage.cloth_type.label}}</label>
-                {{engage.cloth_type}}
-            </div>
-            <div class="form-group">
-                <label for="{{engage.color.id_for_label}}">{{engage.color.label}}</label>
-                {{engage.color}}
-            </div>
+            {% for engage in engages %}
+
+                <div class="form-group formsetEngage">
+                    {{engage.non_field_errors}}
+                    <div class="form-group ">
+                        <label for="{{engage.quantity.id_for_label}}">{{engage.quantity.label}}</label>
+                        {{engage.quantity}}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{engage.unit_price.id_for_label}}">{{engage.unit_price.label}}</label>
+                        {{engage.unit_price}}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{engage.cloth_type.id_for_label}}">{{engage.cloth_type.label}}</label>
+                        {{engage.cloth_type}}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{engage.color.id_for_label}}">{{engage.color.label}}</label>
+                        {{engage.color}}
+                    </div>
+                </div>
+            {% endfor %}
         </div>
 
         <input style="width: 100px;" class="btn btn-success" type="submit" name="" id="" value="ตกลง">
     </form>
-
-
+    <button onclick="addForm(document.querySelector('#id_type_revenue').value)">เพิ่มรายการ</button>
+    <button onclick="removeForm(document.querySelector('#id_type_revenue').value)">เพิ่มรายการ</button>
     <script>
+        var amountForm = 1
         var sell = document.querySelector('#selling')
         var engage = document.querySelector('#engaging')
-        var storeSellHTML = sell.innerHTML
-        var storeEngageHTML = engage.innerHTML
+        var storeSellHTML = document.querySelectorAll('.formsetSell')
+        var storeEngageHTML = document.querySelectorAll('.formsetEngage')
         sell.innerHTML = ""
         engage.innerHTML = ""
+
+        function addForm(x){
+            if(amountForm < 10)
+                amountForm++
+                if(x==1)
+                    sell.appendChild(storeSellHTML[amountForm])
+                else if(x==2)
+                    engage.appendChild(storeEngageHTML[amountForm])
+        }
+        function removeForm(x){
+            if(amountForm > 1)
+                if(x==1)
+                    sell.removeChild(storeSellHTML[amountForm])
+                else if(x==2)
+                    engage.removeChild(storeEngageHTML[amountForm])
+                amountForm--
+                
+        }    
+        
         function chooseForm(x){
             if(x==1){
-                sell.innerHTML = storeSellHTML
                 engage.innerHTML = ""
+                amountForm = 0
+                addForm(x)
             }
             else if(x==2){
-                engage.innerHTML = storeEngageHTML
                 sell.innerHTML = ""
+                amountForm = 0
+                addForm(x)
             }
         }
         chooseForm(document.getElementById('id_type_revenue').value)
