@@ -60,7 +60,10 @@ def detail(request, eid):
     total = 0
     paid = 0
     employee = Employee.objects.get(pk=eid)
+    employee.age = datetime.now().year-employee.birthdate.year
+    employee.save()
     date_payment = Working_time.objects.filter(employee=eid)
+    paid_salarys = Paid_salary.objects.filter(employee=employee)
     form = Paid_salaryForm()
     if request.method == "POST":
         form = Paid_salaryForm(request.POST)
@@ -68,10 +71,13 @@ def detail(request, eid):
             data = form.cleaned_data
             date_payment = Working_time.objects.filter(date__range=[data['start_date'], data['end_date']], employee=eid)
             for each in date_payment:
-                total += each.total_wage
+                for paid_salary in paid_salarys:
+                    if not (each.date >= paid_salary.start_date and each.date <= paid_salary.end_date):
+                        total += each.total_wage
             paid = 1
             context['st'] = data['start_date']
             context['ed'] = data['end_date']
+    context['paid_salarys'] = paid_salarys
     context['paid'] = paid
     context['total'] = total
     context['form'] = form
@@ -259,7 +265,7 @@ def paidSalary(request, eid):
         expense = Expense.objects.create(
             amount=total,
             date=datetime.now(),
-            description='จ่ายเงินลูกจ้าง %s %s'%(employee.fname, employee.lname),
+            description='จ่ายเงินลูกจ้าง %s %s ของวันที่ %s-%s'%(employee.fname, employee.lname,st,ed),
             type_expense='1',
         )
         paid = Paid_salary.objects.create(
