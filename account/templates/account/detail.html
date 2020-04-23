@@ -6,8 +6,10 @@
     {% endblock text_head %}
 
     {% block desc %}
-        <h1>{{employee.fname}}</h1>
-
+        <h2>ชื่อ-นามสกุล: {{employee.fname}} {{employee.lname}}</h2>
+        <h4>อายุ: {{employee.age}} เกิดวันที่: {{employee.birthdate|date:"d-m-Y"}}</h4>
+        <h4>วันเข้าทำงาน: {{employee.hire_date|date:"d-m-Y"}}</h4>
+        <h4>ค่าจ้างต่อชั่วโมง: {{employee.rating_wage_per_hour}}</h4>
         <button class="btn btn-secondary" onclick="location.href='{%url 'editEmployee' eid=employee.id %}'">แก้ไขข้อมูล</button>
         <h3>เลือกวันจ่ายเงิน</h3>
         <form action="{% url 'detail' eid=employee.id%}" method="POST">
@@ -24,8 +26,9 @@
             </div>
             <input style="margin-top:5px;" class="btn btn-primary" type="submit" value="เลือก">            
         </form>        
-        <p>ทั้งหมด: {{total}}</p>
+        
         {%if paid%}
+        <p>ทั้งหมด: {{total}} บาท(คิดแค่วันที่ยังไม่จ่าย)</p>
         <form action="{%url 'paidSalary' eid=employee.id %}" method='POST'>
             {%csrf_token%}
             <input type="hidden" name='st' value="{{st}}">
@@ -60,6 +63,7 @@
                         <th scope="col">เวลาเริ่มงานบ่าย</th>
                         <th scope="col">เวลาเลิกงานบ่าย</th>
                         <th scope="col">ค่าจ้างที่ต้องจ่าย</th>
+                        <th scope="col">สถานะ</th>
                       </tr>
                 </thead>
                 {%for date in date_payment%}
@@ -70,6 +74,15 @@
                         <td>{{date.from_afternoon}}</td>
                         <td>{{date.to_afternoon}}</td>
                         <td>{{date.total_wage}}</td>
+                        {% for paid_salary in paid_salarys %}
+                            {% if date.date >= paid_salary.start_date and date.date <= paid_salary.end_date %}
+                                <td>จ่ายแล้ว</td>
+                            {% else %}
+                                <td>ยังไม่จ่าย</td>
+                            {% endif %}
+                        
+                        {% endfor %}
+                        
                     </tr>
                 {% endfor %}
 

@@ -3,34 +3,40 @@
 รายรับ
 {% endblock text_head %}
 {% block table %}
-    <form action="{% url 'revenue' %}" method="POST">
-        {%csrf_token%}
-        {{revenue.non_field_errors}}
+<form action="{% url 'revenue' %}" method="POST">
+    {%csrf_token%}
+    {{ sells.management_form }}
+    {{ engages.management_form }}
+    {{ revenue.non_field_errors }}
+    <input type='hidden' id='amountForm' name='amountForm' value='{{amountForm}}'>
+    <div class="form-group">
         <div class="form-group">
-            <div class="form-group">
-                <label for="{{revenue.amount.id_for_label}}">{{revenue.amount.label}}</label>
-                {{revenue.amount}}
-            </div>
-            <div class="form-group">
-                <label for="{{revenue.type_revenue.id_for_label}}">{{revenue.type_revenue.label}}</label>
-                {{revenue.type_revenue}}
-            </div>
-            <div class="form-group">
-                <label for="{{revenue.date.id_for_label}}">{{revenue.date.label}}</label>
-                {{revenue.date}}
-            </div>
-            <div class="form-group">
-                <label for="{{revenue.description.id_for_label}}">{{revenue.description.label}}</label>
-                {{revenue.description}}
-            </div>
-            <div class="form-group">
-                <label for="{{revenue.customer.id_for_label}}">{{revenue.customer.label}}</label>
-                {{revenue.customer}}
-            </div>
+            <label for="{{revenue.amount.id_for_label}}">{{revenue.amount.label}}</label>
+            {{revenue.amount}}
         </div>
+        <div class="form-group">
+            <label for="{{revenue.type_revenue.id_for_label}}">{{revenue.type_revenue.label}}</label>
+            {{revenue.type_revenue}}
+        </div>
+        <div class="form-group">
+            <label for="{{revenue.date.id_for_label}}">{{revenue.date.label}}</label>
+            {{revenue.date}}
+        </div>
+        <div class="form-group">
+            <label for="{{revenue.description.id_for_label}}">{{revenue.description.label}}</label>
+            {{revenue.description}}
+        </div>
+        <div class="form-group">
+            <label for="{{revenue.customer.id_for_label}}">{{revenue.customer.label}}</label>
+            {{revenue.customer}}
+        </div>
+    </div>
 
-        <div class="form-group" id='selling'>
-        {{sell.non_field_errors}}
+    <div class="form-group" id='selling'>
+        {%for sell in sells %}
+
+        <div class="form-group formsetSell">
+            {{sell.non_field_errors}}
             <div class="form-group">
                 <label for="{{sell.quantity.id_for_label}}">{{sell.quantity.label}}</label>
                 {{sell.quantity}}
@@ -45,9 +51,15 @@
             </div>
         </div>
 
-        <div class="form-group" id='engaging'>
-        {{engage.non_field_errors}}
-            <div class="form-group">
+        {% endfor %}
+    </div>
+
+    <div class="form-group" id='engaging'>
+        {% for engage in engages %}
+
+        <div class="form-group formsetEngage">
+            {{engage.non_field_errors}}
+            <div class="form-group ">
                 <label for="{{engage.quantity.id_for_label}}">{{engage.quantity.label}}</label>
                 {{engage.quantity}}
             </div>
@@ -64,32 +76,110 @@
                 {{engage.color}}
             </div>
         </div>
+        {% endfor %}
+    </div>
+    <button type='button' class="btn btn-success" onclick="addForm(document.querySelector('#id_type_revenue').value)">เพิ่มรายการ</button>
+<button type='button' class="btn btn-success" onclick="removeForm(document.querySelector('#id_type_revenue').value)">ลดรายการ</button>
+    <input style="width: 100px;" class="btn btn-success" type="submit" name="" id="" value="ตกลง">
+</form>
 
-        <input style="width: 100px;" class="btn btn-success" type="submit" name="" id="" value="ตกลง">
-    </form>
-
-
-    <script>
-        var sell = document.querySelector('#selling')
-        var engage = document.querySelector('#engaging')
-        var storeSellHTML = sell.innerHTML
-        var storeEngageHTML = engage.innerHTML
-        sell.innerHTML = ""
-        engage.innerHTML = ""
-        function chooseForm(x){
-            if(x==1){
-                sell.innerHTML = storeSellHTML
-                engage.innerHTML = ""
+<script>
+    var tag = document.querySelector('#amountForm')
+    var amountForm = tag.value
+    var sell = document.querySelector('#selling')
+    var engage = document.querySelector('#engaging')
+    var storeSellHTML = document.querySelectorAll('.formsetSell')
+    var storeEngageHTML = document.querySelectorAll('.formsetEngage')
+    var type = document.querySelector('#id_type_revenue').value
+    sell.innerHTML = ""
+    engage.innerHTML = ""
+    var listAmount = []
+    console.log(amountForm)
+    function addForm(x) {
+        if (amountForm < 10)
+        console.log(amountForm)
+            if (x == 1) {
+                if (listAmount.indexOf(amountForm) > -1) {
+                    amountForm++
+                }
+                else {
+                    sell.appendChild(storeSellHTML[amountForm])
+                    amountForm++
+                    
+                }
             }
-            else if(x==2){
-                engage.innerHTML = storeEngageHTML
-                sell.innerHTML = ""
+            else if (x == 2) {
+                if (listAmount.indexOf(amountForm) > -1) {
+                    amountForm++
+                }
+                else {
+                    engage.appendChild(storeEngageHTML[amountForm])
+                    amountForm++
+                }
+
+            }
+        tag.value = amountForm
+    }
+    function removeForm(x) {
+        if (amountForm > 1)
+            if (x == 1) {
+                if (listAmount.indexOf(amountForm) > -1) {
+                    amountForm--
+                }
+                else {
+                    amountForm--
+                    sell.removeChild(storeSellHTML[amountForm])
+                    
+                }
+            }
+            else if (x == 2) {
+                if (listAmount.indexOf(amountForm) > -1) {
+                    amountForm--
+                }
+                else {
+                    amountForm--
+                    engage.removeChild(storeEngageHTML[amountForm])
+                    
+                }
+            }
+        tag.value = amountForm
+
+    }
+
+    function chooseForm(x) {
+        if (x == 1) {
+            engage.innerHTML = ""
+            amountForm = 0
+            addForm(x)
+        }
+        else if (x == 2) {
+            sell.innerHTML = ""
+            amountForm = 0
+            addForm(x)
+        }
+    }
+    chooseForm(document.getElementById('id_type_revenue').value)
+
+    function setUp() {
+        for (var i = 0; i < 10; i++) {
+            if (type == 1) {
+                if (storeSellHTML[i].lastElementChild.lastElementChild.value != "") {
+                    sell.appendChild(storeSellHTML[i])
+                    listAmount.push(i)
+                }
+            }
+            else if (type == 2) {
+                if (storeEngageHTML[i].firstElementChild.lastElementChild.value) {
+                    engage.appendChild(storeEngageHTML[i])
+                    listAmount.push(i)
+                }
             }
         }
-        chooseForm(document.getElementById('id_type_revenue').value)
-    
-    
-    </script>
+    }
+    setUp()
+
+
+</script>
 
 
 

@@ -22,7 +22,7 @@
                 </thead>
                 {%for revenue in revenues%}
                     <tr>
-                        <td>{{revenue.date}}</td>
+                        <td>{{revenue.date|date:"d-m-Y"}}</td>
                         <td>{{revenue.description}}</td>
                         <td>{{revenue.amount}}</td>
                         <td></td>
@@ -30,7 +30,7 @@
                 {%endfor%}
                 {%for expense in expenses%}
                     <tr>
-                        <td>{{expense.date}}</td>
+                        <td>{{expense.date|date:"d-m-Y"}}</td>
                         <td>{{expense.description}}</td>
                         <td></td>
                         <td>{{expense.amount}}</td>
