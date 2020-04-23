@@ -83,7 +83,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'factoryCloth',
         'USER': 'postgres',
-        'PASSWORD': '1234',
+        'PASSWORD': 'oneonly',
         'HOST': 'localhost',
         'PORT': '5432',
     }
