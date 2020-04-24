@@ -20,7 +20,7 @@ from django.forms import formset_factory
 @login_required
 def showEmployee(request):
     context = {}
-    employees = Employee.objects.all()
+    employees = Employee.objects.all().order_by('id')
     if request.method == 'GET':
         fname = request.GET.get('fname', '')
         lname = request.GET.get('lname', '')
@@ -63,7 +63,8 @@ def detail(request, eid):
     employee.age = datetime.now().year-employee.birthdate.year
     employee.save()
     date_payment = Working_time.objects.filter(employee=eid)
-    paid_salarys = Paid_salary.objects.filter(employee=employee)
+    paid_salarys = Paid_salary.objects.filter(employee=eid)
+    paidList = checkTimeMath(paid_salarys, date_payment)
     form = Paid_salaryForm()
     if request.method == "POST":
         form = Paid_salaryForm(request.POST)
@@ -71,12 +72,17 @@ def detail(request, eid):
             data = form.cleaned_data
             date_payment = Working_time.objects.filter(date__range=[data['start_date'], data['end_date']], employee=eid)
             for each in date_payment:
+                has = 0
                 for paid_salary in paid_salarys:
-                    if not (each.date >= paid_salary.start_date and each.date <= paid_salary.end_date):
-                        total += each.total_wage
+                    if each.date >= paid_salary.start_date and each.date <= paid_salary.end_date:
+                        has = 1
+                        break
+                if not has:
+                    total += each.total_wage
             paid = 1
             context['st'] = data['start_date']
             context['ed'] = data['end_date']
+    context['paidList'] = paidList 
     context['paid_salarys'] = paid_salarys
     context['paid'] = paid
     context['total'] = total
@@ -85,6 +91,20 @@ def detail(request, eid):
     context['date_payment'] = date_payment
     context['eid'] = eid
     return render(request, 'account/detail.html', context=context)
+
+def checkTimeMath(payment, date):
+    paidList = []
+    for each in date:
+        has = 0
+        for paid in payment:
+            if each.date >= paid.start_date and each.date <= paid.end_date:
+                paidList.append(1)
+                has = 1
+                break 
+        if not has:
+            paidList.append(0)
+                
+    return paidList
 
 """@csrf_exempt
 def sendDataAPI(request, eid):
@@ -160,6 +180,14 @@ def account(request):
     context = {}
     expenses = Expense.objects.all()
     revenues = Revenue.objects.all()
+    paid = Paid_salaryForm()
+    if request.method == 'POST':
+       paid = Paid_salaryForm(request.POST)
+       if paid.is_valid():
+            data = paid.cleaned_data
+            expenses = Expense.objects.filter(date__range=[data['start_date'], data['end_date']])
+            revenues = Revenue.objects.filter(date__range=[data['start_date'], data['end_date']])
+    context['paid'] = paid
     context['revenues'] = revenues
     context['expenses'] = expenses
     return render(request, 'account/account.html', context=context)
@@ -236,14 +264,15 @@ def revenue(request):
                     )
                     engaging = Engaging.objects.create(revenue=revenue)
                     for engage_form in engage_data:
-                        engage_form = engage_data.cleaned_data
-                        engage_list = Engage_list.objects.create(
-                            engaging_revenue=engaging,
-                            quantity=engage_form['quantity'],
-                            unit_price=engage_form['unit_price'],
-                            cloth_type=engage_form['cloth_type'],
-                            color=engage_form['color']
-                        )
+                         if engage_form.cleaned_data.get('quantity'):
+                            engage_form = engage_form.cleaned_data
+                            engage_list = Engage_list.objects.create(
+                                engaging_revenue=engaging,
+                                quantity=engage_form['quantity'],
+                                unit_price=engage_form['unit_price'],
+                                cloth_type=engage_form['cloth_type'],
+                                color=engage_form['color']
+                            )
                     return redirect('account')
                 else:
                     revenue_form = RevenueForm(request.POST)

@@ -94,6 +94,8 @@
     sell.innerHTML = ""
     engage.innerHTML = ""
     var listAmount = []
+    var listSelect = []
+
     console.log(amountForm)
     function addForm(x) {
         if (amountForm < 10)
@@ -169,7 +171,7 @@
                 }
             }
             else if (type == 2) {
-                if (storeEngageHTML[i].firstElementChild.lastElementChild.value) {
+                if (storeEngageHTML[i].lastElementChild.lastElementChild.value != "") {
                     engage.appendChild(storeEngageHTML[i])
                     listAmount.push(i)
                 }
@@ -177,6 +179,10 @@
         }
     }
     setUp()
+
+    function removeOption(x){
+        listSelect.push(x)
+    }
 
 
 </script>

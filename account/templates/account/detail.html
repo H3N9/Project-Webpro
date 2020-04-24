@@ -70,18 +70,11 @@
                     <tr>
                         <td>{{date.date}}</td>
                         <td>{{date.from_beforenoon}}</td>
-                        <td>{{date.to_beforenoon}}</td>
+                        <td>{{date.to_beforenoon|date:"H:i a"}}</td>
                         <td>{{date.from_afternoon}}</td>
                         <td>{{date.to_afternoon}}</td>
                         <td>{{date.total_wage}}</td>
-                        {% for paid_salary in paid_salarys %}
-                            {% if date.date >= paid_salary.start_date and date.date <= paid_salary.end_date %}
-                                <td>จ่ายแล้ว</td>
-                            {% else %}
-                                <td>ยังไม่จ่าย</td>
-                            {% endif %}
-                        
-                        {% endfor %}
+                        {{val}}
                         
                     </tr>
                 {% endfor %}

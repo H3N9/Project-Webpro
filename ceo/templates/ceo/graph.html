@@ -111,11 +111,11 @@ setChart('cloth', 'sell')
 
 var ctx = document.getElementById('myChart').getContext('2d');
 var chart = new Chart(ctx, {
-type: 'bar', // you can change type to [line, bar, polar, rader, pie, others] link https://www.chartjs.org/docs/latest/charts/
+type: 'line', // you can change type to [line, bar, polar, rader, pie, others] link https://www.chartjs.org/docs/latest/charts/
 data: {
     labels: [],
     datasets: [{
-        label: '# of Votes',
+        label: ' of quantity',
         data: [],
         backgroundColor: [
             'rgba(255, 99, 132, 0.2)',
