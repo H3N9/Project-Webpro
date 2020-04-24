@@ -21,7 +21,6 @@ def index(request):
 @group_required('ceo')
 def graph(request):
     context = {}
-
     return render(request, 'ceo/graph.html', context=context)
     
 @group_required('ceo')

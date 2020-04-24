@@ -10,13 +10,17 @@
                         <input class="form-control form-control-lg" placeholder="Username" value='{{username}}' type="text" name='username'>
                     </div>
                     <div class="form-group">
-                        <input class="form-control form-control-lg" placeholder="Password" value='{{password}}' type="password" name='password'>
+                        <input class="form-control form-control-lg" placeholder="Password" value='{{password}}' type="password" name='password'>                    
                     </div>
+                    <div class="alert alert-danger" role="alert">
+                        {{errors}}
+                    </div>
+                    {% comment %} <p class="text-danger">{{errors}}</p> {% endcomment %}
                     <div class="form-group">
                         <button class="btn btn-info btn-lg btn-block">Sign In</button>
                     </div>
-                </form>
 
+                </form>
             </div>
         </div>
     </div>
