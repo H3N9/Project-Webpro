@@ -142,7 +142,28 @@ options: {
             ticks: {
                 beginAtZero: true
             }
-        }]
+        });
+    }
+    setChart('cloth', 'sell')
+    
+    function change(num){
+        var btn1 = document.getElementById("mybtn1");
+        var btn2 = document.getElementById("mybtn2");
+        var btn3 = document.getElementById("mybtn3");
+        var btn4 = document.getElementById("mybtn4");
+        if(num === 1){
+            btn1.style.display = "none"
+            btn2.style.display = "none"
+            btn3.style.display = "inline"
+            btn4.style.display = "inline"
+            setChart('cloth', 'engage')
+        }else{
+            btn1.style.display = "inline"
+            btn2.style.display = "inline"
+            btn3.style.display = "none"
+            btn4.style.display = "none"
+            setChart('cloth', 'sell')
+        }
     }
 }
 });

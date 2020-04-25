@@ -6,6 +6,7 @@ from dateutil.parser import parse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
+from project.check import group_required
 import json
 from django.db.models import Max, Min #Models.objects.all().aggregate(Avg('price'))
 from rest_framework.renderers import JSONRenderer
@@ -17,7 +18,7 @@ from django.forms import formset_factory
 
 
 # Create your views here.
-@login_required
+@group_required('accountant')
 def showEmployee(request):
     context = {}
     employees = Employee.objects.all().order_by('id')
@@ -33,7 +34,7 @@ def showEmployee(request):
     context['employees'] = employees
     return render(request, 'account/employee.html', context=context)
 
-@login_required
+@group_required('accountant')
 def addEmployee(request):
     context = {}
     form = EmployeeForm()
@@ -54,7 +55,7 @@ def addEmployee(request):
     context['form'] = form
     return render(request, 'account/addEmployee.html', context=context)
 
-@login_required
+@group_required('accountant')
 def detail(request, eid):
     context = {}
     total = 0
@@ -114,13 +115,13 @@ def sendDataAPI(request, eid):
         serializer = EmployeeSerializer(instance=employee)
         return JsonResponse(serializer.data, status=200, safe=False)"""
 
-@login_required
+@group_required('accountant')
 def deleteEmployee(request, eid):
     employee = Employee.objects.get(pk=eid)
     employee.delete()
     return redirect('showEmployee')
 
-@login_required
+@group_required('accountant')
 def addTime(request, eid):
     context = {}
     formTime = Working_timeForm()
@@ -175,7 +176,7 @@ def checkTime(start_bn, end_bn, start_an,end_an, rate):
         return [normal,0]
 
 
-@login_required
+@group_required('accountant')
 def account(request):
     context = {}
     expenses = Expense.objects.all()
@@ -192,7 +193,7 @@ def account(request):
     context['expenses'] = expenses
     return render(request, 'account/account.html', context=context)
 
-@login_required
+@group_required('accountant')
 def expense(request):
     context = {}
     form = ExpenseForm()
@@ -211,7 +212,7 @@ def expense(request):
     return render(request, 'account/expense.html', context=context)
 
 
-@login_required
+@group_required('accountant')
 def revenue(request):
     context = {}
     amountForm = 1
@@ -283,7 +284,7 @@ def revenue(request):
     context['amountForm'] = amountForm
     return render(request, 'account/revenue.html', context=context)
 
-@login_required
+@group_required('accountant')
 def paidSalary(request, eid):
     employee = Employee.objects.get(pk=eid)
     if request.method == "POST":
@@ -305,11 +306,12 @@ def paidSalary(request, eid):
         )
     return redirect('/employee/detail/%d'%eid)
 
-
+@group_required('accountant')
 def customer(request):
     context = {}
     return render(request, 'account/customer.html', context=context)
 
+@group_required('accountant')
 def addCustomer(request):
     context = {}
     form = CustomerForm()
@@ -326,6 +328,7 @@ def addCustomer(request):
     context['form'] = form
     return render(request, 'account/addCustomer.html', context=context)
 
+@group_required('accountant')
 def editEmployee(request, eid):
     context = {}
     employee = Employee.objects.get(pk=eid)
