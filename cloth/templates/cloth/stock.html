@@ -7,7 +7,6 @@
         <button style="width: 80px;" class="btn btn-info" onclick="location.href='{%url 'color' %}'">ดูสี</button>
     {% endblock desc %}
     {% block table %}
-
         <table class="table table-striped" style="margin-top: 10px;">
                 <thead>
                     <tr>
@@ -25,11 +24,11 @@
                         <td>{{cloth.color}}</td>
                         <td>{{cloth.price}}</td>
                         <td>
-                            <button onclick="location.href='{%url 'stockEdit' sid=cloth.id %}'">แก้ไขผ้า</button>
+                            <button class="btn btn-warning" style="color: #3B3511;"  onclick="location.href='{%url 'stockEdit' sid=cloth.id %}'">แก้ไขข้อมูล</button>
                         </td>
                       </tr>
                 {% endfor %}
         </table>
-        <button style="color: white;" class="btn btn-warning" onclick="location.href='{%url 'addStock' %}'">เพิ่มผ้าในคลัง</button>
+        <button style="color: white;" class="btn btn-success" onclick="location.href='{%url 'addStock' %}'">เพิ่มผ้าในคลัง</button>
 
     {% endblock table %}

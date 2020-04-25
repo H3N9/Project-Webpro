@@ -280,6 +280,8 @@ def paidSalary(request, eid):
 @group_required('accountant')
 def customer(request):
     context = {}
+    customer = Customer.objects.all()
+    context['customer'] = customer
     return render(request, 'account/customer.html', context=context)
 
 @group_required('accountant')

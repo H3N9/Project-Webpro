@@ -73,7 +73,7 @@ def clothEdit(request, cid):
 @group_required('manager')
 def colorEdit(request, cid):
     color = Color.objects.get(pk=cid)
-    form = ColorForm(instance=color)
+    form = ColorForm()
     if request.method == "POST":
         form = ColorForm(request.POST, request.FILES or None)
         if form.is_valid():

@@ -5,9 +5,30 @@
 {% endblock text_head %}
 
 {% block desc %}
-    <button class="btn btn-warning" style="color:white" onclick="location.href='{%url 'addCustomer' %}'">เพิ่มลูกค้า</button>
+    <button class="btn btn-success" style="color:white" onclick="location.href='{%url 'addCustomer' %}'">เพิ่มลูกค้า</button>
 {% endblock desc%}
 
 {% block table %}
-
+     <table class="table table-striped" style="margin-top: 10px;">
+                    <thead>
+                        <tr>
+                            <th scope="col">ชื่อ</th>
+                            <th scope="col">เบอร์ติดต่อ</th>
+                            <th scope="col">ที่อยู่</th>
+                            <th scope="col">แก้ไข</th>
+                        </tr>
+                    </thead>
+                    {%for cus in customer %}
+                        <tr>
+                            <td>{{cus.name}}</td>
+                            <td>{{cus.contact}}</td>
+                            <td>{{cus.address}}</td>
+                            <td>
+                                <button class="btn btn-warning" >
+                                    แก้ไขข้อมูล
+                                </button>
+                            </td>
+                        </tr>
+                    {%endfor%}
+    </table>
 {% endblock table %}

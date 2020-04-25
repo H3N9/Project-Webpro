@@ -25,6 +25,7 @@ class ColorForm(forms.ModelForm):
         widgets = {            
             'name':forms.DateInput(attrs={ 'class':'form-control'}),
         }
+
 class Cloth_in_stockForm(forms.ModelForm):
     class Meta:
         model = models.Cloth_in_stock

@@ -1,4 +1,5 @@
 {% extends 'base-box.html' %}
+{%load static%}
     {% block text_head %}
         แก้ไขสี
     {% endblock text_head %}
@@ -7,7 +8,15 @@
     {% block table %}
         <form action="{%url 'colorEdit' cid=color.id %}" method="POST" enctype="multipart/form-data">
             {%csrf_token%}
-            <table>{{form}}</table>
-            <input type="submit">
+            <div class="form-group">
+                <label>{{form.name.label}}</label>
+                {{form.name}}
+            </div>            
+            <div class="form-group">
+                <label>{{form.image.label}}</label><br>
+                {{form.image}}
+            </div>
+            <input class="btn btn-success" type="submit">
         </form>
+
     {% endblock table %}
