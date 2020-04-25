@@ -331,6 +331,24 @@ def addCustomer(request):
     return render(request, 'account/addCustomer.html', context=context)
 
 @group_required('accountant')
+def editCustomer(request, cid):
+    context = {}
+    customer = Customer.objects.get(pk=cid)
+    form = CustomerForm(instance=customer)
+    if request.method == 'POST':
+        form = CustomerForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            customer.name=data['name']
+            customer.contact=data['contact']
+            customer.address=data['address']
+            customer.save()
+            return redirect('customer')
+    context['form'] = form
+    context['customer'] = customer
+    return render(request, 'account/editCustomer.html', context=context)
+
+@group_required('accountant')
 def editEmployee(request, eid):
     context = {}
     employee = Employee.objects.get(pk=eid)

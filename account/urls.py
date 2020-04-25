@@ -13,6 +13,7 @@ urlpatterns = [
     path('account/revenue/', views.revenue, name='revenue'),
     path('customer/', views.customer, name='customer'),
     path('customer/add/', views.addCustomer, name='addCustomer'),
+    path('customer/edit/<int:cid>/', views.editCustomer, name='editCustomer'),
     path('employee/edit/<int:eid>/', views.editEmployee, name='editEmployee'),
     path('account/revenue/detail/<int:aid>/', views.revenueDetail, name='revenueDetail')
 ]

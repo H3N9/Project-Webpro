@@ -1,0 +1,15 @@
+{% extends 'base-box.html' %}
+
+    {% block text_head %}
+        {{customer.name}}
+    {% endblock text_head %}
+
+{% block desc %}
+
+    <form action="{% url 'editCustomer' cid=customer.id%}" method="POST">
+        {%csrf_token%}
+        {{form}} 
+        <input class="btn btn-success" type="submit" value="ตกลง" style="margin-top: 20px; width: 80px;">
+    </form>
+
+{% endblock desc %}
