@@ -89,17 +89,15 @@
     var sell = document.querySelector('#selling')
     var engage = document.querySelector('#engaging')
     var storeSellHTML = document.querySelectorAll('.formsetSell')
+    var storeOption = []
     var storeEngageHTML = document.querySelectorAll('.formsetEngage')
     var type = document.querySelector('#id_type_revenue').value
     sell.innerHTML = ""
     engage.innerHTML = ""
     var listAmount = []
     var listSelect = []
-
-    console.log(amountForm)
     function addForm(x) {
         if (amountForm < 10)
-        console.log(amountForm)
             if (x == 1) {
                 if (listAmount.indexOf(amountForm) > -1) {
                     amountForm++
@@ -107,6 +105,7 @@
                 else {
                     sell.appendChild(storeSellHTML[amountForm])
                     amountForm++
+                    updateOption()
                     
                 }
             }
@@ -117,11 +116,14 @@
                 else {
                     engage.appendChild(storeEngageHTML[amountForm])
                     amountForm++
+                    updateOption()
                 }
 
             }
         tag.value = amountForm
     }
+
+
     function removeForm(x) {
         if (amountForm > 1)
             if (x == 1) {
@@ -131,6 +133,10 @@
                 else {
                     amountForm--
                     sell.removeChild(storeSellHTML[amountForm])
+                    deleteListSelect(storeSellHTML[amountForm].lastElementChild.lastElementChild)
+                    removeValue(storeSellHTML[amountForm])
+                    updateOption()
+                    
                     
                 }
             }
@@ -141,6 +147,7 @@
                 else {
                     amountForm--
                     engage.removeChild(storeEngageHTML[amountForm])
+                    removeValue(storeEngageHTML[amountForm])
                     
                 }
             }
@@ -150,17 +157,21 @@
 
     function chooseForm(x) {
         if (x == 1) {
+            resetUp(engage)
             engage.innerHTML = ""
             amountForm = 0
             addForm(x)
         }
         else if (x == 2) {
+            resetUp(sell)
             sell.innerHTML = ""
+            listSelect = []
+            updateOption()
             amountForm = 0
             addForm(x)
         }
     }
-    chooseForm(document.getElementById('id_type_revenue').value)
+    
 
     function setUp() {
         for (var i = 0; i < 10; i++) {
@@ -168,6 +179,7 @@
                 if (storeSellHTML[i].lastElementChild.lastElementChild.value != "") {
                     sell.appendChild(storeSellHTML[i])
                     listAmount.push(i)
+                    addOption(storeSellHTML[i].lastElementChild.lastElementChild)
                 }
             }
             else if (type == 2) {
@@ -180,8 +192,129 @@
     }
     setUp()
 
-    function removeOption(x){
-        listSelect.push(x)
+    function addOption(x){
+        var object = {sid:x.id,value:x.value}
+        var index = -1
+        for(var i=0;i<listSelect.length;i++){
+            if(listSelect[i]['sid'] == x.id){
+                index = i
+                break
+            }
+        }
+        if(index == -1){
+            listSelect.push(object)
+        }
+        else if(index > -1){
+            listSelect[index]['value'] = x.value
+        }
+        updateOption()
+    }
+
+    function deleteListSelect(x){
+        var index = -1
+        for(var i=0;i<listSelect.length;i++){
+            if(listSelect[i]['sid'] == x.id){
+                index = i
+            }
+        }
+        if(index > -1)
+            listSelect.splice(index,1)
+    }
+    function fullfill(){
+        for(var j = 0;j < amountForm;j++){
+            var x = storeSellHTML[j].lastElementChild.lastElementChild
+            for(var i = 0;i< storeOption.length;i++){
+                if(storeOption[i]['sid']==x.id){
+                    for(var c = 0;c<storeOption[i]['option'].length;c++){
+                        x.appendChild(storeOption[i]['option'][c])
+                    }
+                    storeOption[i]['option'] = []
+                }
+            }
+        }
+    }
+
+    function updateOption(){
+        fullfill()
+        for(var j = 0;j < amountForm;j++){
+            var x = storeSellHTML[j].lastElementChild.lastElementChild
+            var count = x.childElementCount
+            var del = 0
+            for(var i = 0 ;i<count;i++){
+                if(i==0){
+                    var first = x.firstElementChild
+                }
+                else if(del == 0){
+                    first = first.nextElementSibling
+                    pre = first.previousElementSibling
+                }
+                else if(del == 1){
+                    first = pre
+                }
+                
+                for(var c = 0;c < listSelect.length;c++){
+                    if(listSelect[c]['value']==first.value && listSelect[c]['value'] != "" && listSelect[c]['sid'] != x.id){
+                        console.log(first)
+                        var obj = {sid:x.id,option:[first]}
+                        var index = -1
+                        for(var s=0;s<storeOption.length;s++){
+                            if(storeOption[s]['sid']==x.id){
+                                index = s
+                                break
+                            }
+                        }
+                        if(index == -1){
+                            storeOption.push(obj)
+                        }
+                        else{
+                            storeOption[index]['option'].push(first)
+                        }
+                        x.removeChild(first)
+                        del = 1
+                        break
+                    }
+                    else{
+                        del = 0
+                    }
+                }
+            }
+        }
+    }
+
+    function removeValue(x){
+        for(var i = 0;i < x.childElementCount;i++){
+            if(i==0){
+                var child = x.firstElementChild
+                child.lastElementChild.value = ""
+            }
+            else{
+                child = child.nextElementSibling
+                child.lastElementChild.value = ""
+                
+            }
+        }
+    }
+
+    function resetUp(x){
+        for(var c = 0;c < x.childElementCount;c++){
+            if(c==0){
+                var div = x.firstElementChild
+            }
+            else{
+                div = div.nextElementSibling
+            }
+            for(var i = 0;i < div.childElementCount;i++){
+                if(i==0){
+                    var child = div.firstElementChild
+                    child.lastElementChild.value = ""
+                }
+                else{
+                    child = child.nextElementSibling
+                    child.lastElementChild.value = ""
+                    
+                }
+            }
+        }
     }
 
 

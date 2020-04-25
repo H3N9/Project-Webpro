@@ -150,7 +150,7 @@ class Sell_listForm(forms.ModelForm):
         widgets = {
             'quantity':forms.NumberInput(attrs={'oninput':"positive(this)", 'class':'form-control'}),
             'unit_price': forms.NumberInput(attrs={'oninput':"positive(this)", 'class':'form-control'}),
-            'cloth_in_stock': forms.Select(attrs={ 'class':'form-control', 'oninput':"removeOption(this)"})
+            'cloth_in_stock': forms.Select(attrs={ 'class':'form-control', 'oninput':"addOption(this)"})
         }
 
     def clean(self):
