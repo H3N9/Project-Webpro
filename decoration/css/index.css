@@ -1,4 +1,14 @@
 
+.navbar-custom{
+    background-color: #FFE666;
+}
+.navbar-brand{
+    color: #4D88FF !important;
+}
+.nav-link {
+    font-size: 18px;
+    color: #4D88FF !important; 
+}
 .box-role{
     height: 50vh;
     cursor: pointer;

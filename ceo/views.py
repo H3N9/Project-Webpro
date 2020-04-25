@@ -13,7 +13,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 
-@group_required('ceo')
+@login_required
 def index(request):
     context = {}
     return render(request, 'ceo/index.html', context=context)

@@ -23,8 +23,7 @@
 
 <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js'></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script>
-    
+<script>    
     //call API data form views in ceo
     function setChart(name, type){
         axios.get('/ceo/sendAPI/'+name+"/")
@@ -142,9 +141,13 @@ options: {
             ticks: {
                 beginAtZero: true
             }
-        });
+        }]
     }
-    setChart('cloth', 'sell')
+    
+}
+});
+
+setChart('cloth', 'sell')
     
     function change(num){
         var btn1 = document.getElementById("mybtn1");
@@ -165,9 +168,6 @@ options: {
             setChart('cloth', 'sell')
         }
     }
-}
-});
-
 </script>
 
 {% endblock table %}

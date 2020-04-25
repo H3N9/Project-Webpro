@@ -2,42 +2,76 @@
 {% load static %}
 {% block content %}
 <div class="container-fluid">
-
-
     <div class='row'>
-
-        <div id='employee' class='box-role col-lg-4 sm-12' onclick="location.href='{%url 'showEmployee' %}'">
-            <img  style="width: 50%;
-            position: relative;;
-            top:50%;
-            left:50%;
-            margin-left:-25%;
-            margin-top:-25%;"
-             src="{% static 'img/team.png' %}" alt="">
+        <div style="border: 2px solid #FFE666;" id='employee' class='box-role col-lg-6 bsm-12' onclick="location.href='{%url 'showEmployee' %}'">
+            <div class="row align-items-start justify-content-center">
+                <div class="col-4">
+                 <h2 style="text-align: center; margin-top:15%">ระบบพนักลูกจ้าง</h2>
+                </div>
+              </div>
+            <div class="row align-items-center justify-content-center">
+                <div class="col-4 align-self-center">
+                <img  
+                style="width: 100%;"
+                 src="{% static 'img/team.png' %}" alt="">
+                </div>
+            </div>
+        </div>
+        <div style="border: 2px solid #FFE666;" id='account' class='box-role col-lg-6 sm-12' onclick="location.href='{%url 'account' %}'">
+            <div class="row align-items-start justify-content-center">
+                <div class="col-4 align-self-center">
+                 <h2 style="text-align: center;  margin-top:15%">ระบบบัญชี</h2>
+                </div>
+              </div>
+            <div class="row align-items-center justify-content-center">
+                <div class="col-4 align-self-center">
+                <img  
+                style="width: 100%;"
+                 src="{% static 'img/accounting.png' %}" alt="">
+                </div>
+            </div>
+            
         </div>
 
-        <div id='account' class='box-role col-lg-4 sm-12' onclick="location.href='{%url 'account' %}'">
-            <img  style="width: 50%;
-            position: relative;;
-            top:50%;
-            left:50%;
-            margin-left:-25%;
-            margin-top:-25%;"
-             src="{% static 'img/accounting.png' %}" alt="">
+        <div style="border: 2px solid #FFE666;" id='cloth' class='box-role col-lg-6 sm-12' onclick="location.href='{%url 'stock' %}'">
+            <div class="row align-items-start justify-content-center">
+                <div class="col-4 align-self-center">
+                 <h2 style="text-align: center; margin-top:15%">ระบบคลังผ้า</h2>
+                </div>
+              </div>
+            <div class="row align-items-center justify-content-center">
+                <div class="col-4 align-self-center">
+                <img  
+                style="width: 100%;"
+                 src="{% static 'img/membrane.png' %}" alt="">
+                </div>
+            </div>
         </div>
-
-        <div id='cloth' class='box-role col-lg-4 sm-12' onclick="location.href='{%url 'stock' %}'">
-            <img  style="width: 50%;
-                    position: relative;;
-                    top:50%;
-                    left:50%;
-                    margin-left:-25%;
-                    margin-top:-25%;"
-                     src="{% static 'img/membrane.png' %}" alt="">
+        <div style="border: 2px solid #FFE666;" id='cloth' class='box-role col-lg-6 sm-12 ' onclick="location.href='{%url 'graph' %}'">
+            <div class="row align-items-start justify-content-center">
+                <div class="col-4 align-self-center">
+                 <h1 style="text-align: center; margin-top:15%">สถิติ</h1>
+                </div>
+              </div>
+            <div class="row align-items-center justify-content-center">
+                <div class="col-4 align-self-center">
+                <img  
+                style="width: 100%;"
+                 src="{% static 'img/bar-chart.png' %}" alt="">
+                </div>
+            </div>
+            <!-- <div class="col-12">
+                <img  style="width: 35%;
+                position: relative;;
+                top:50%;
+                left:50%;
+                margin-left:-20%;
+                margin-top:-20%;"
+                 src="{% static 'img/bar-chart.png' %}" alt="">
+            </div> -->
         </div>
-
     </div>
 </div>
 
-<button onclick="location.href='{%url 'graph' %}'">Graph</button>
+
 {% endblock content %}

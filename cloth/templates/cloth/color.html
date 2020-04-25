@@ -17,7 +17,7 @@
         {% for color in colors %}
             <tr>
                 <td>{{color.name}}</td>
-                <td>{%if color.image %}<img src='../../{{color.image}}'>{%endif%}</td>
+                <td>{%if color.image %}<img style="width: 150px; height: 100px;" src='../../{{color.image}}'>{%endif%}</td>
                 <td>
                     <button onclick="location.href='{%url 'colorEdit' cid=color.id %}'">แก้ไขสี</button>
                 

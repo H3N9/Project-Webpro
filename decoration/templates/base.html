@@ -11,24 +11,22 @@
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="{% static 'js/bootstrap.min.js'%}" ></script>
     <script src="{% static 'js/validate.js'%}" ></script>
+    <link href="https://fonts.googleapis.com/css?family=Pridi&display=swap" rel="stylesheet">
 </head>
-<body >
-  <nav class="navbar  navbar-expand-md bg-dark navbar-dark">
-    <a class="navbar-brand" href="{% url 'index'%}">Logo</a>
+<body style="font-family: 'Pridi', serif;">
+  <nav class="navbar  navbar-expand-md navbar-custom navbar-light">
+    <a class="navbar-brand" href="{% url 'index'%}">หยู่เซ้งฟอกย้อม</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar" >
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="collapsibleNavbar">
     <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'showEmployee'%}">หน้าแรก</a>
-      </li>   
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           จัดการข้อมูล
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="{% url 'showEmployee'%}">พนักงาน</a>
+          <a class="dropdown-item"  href="{% url 'showEmployee'%}">พนักงาน</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="{% url 'account'%}">บัญชี</a>
           <div class="dropdown-divider"></div>
