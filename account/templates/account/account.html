@@ -16,14 +16,14 @@
             <div class="col-10">
                 <form action="{%url 'account'%}" method='POST'></form>
                     <div class="row">
-                        <div class="col-1">
+                        <div class="mt-2">
                             {{paid.start_date.label}}
                         </div>
                         <div class="col-4">
                             
                             {{paid.start_date}}
                         </div>
-                        <div class="col-1">
+                        <div class="mt-2">
                             {{paid.end_date.label}}
                         </div>
                         <div class='col-4'>
@@ -31,7 +31,7 @@
                             {{paid.end_date}}
                         </div>
                         <div class="col-2">
-                            <input type="submit" value='ค้นหา'>
+                            <input class="btn btn-success" type="submit" value='ค้นหา'>
                         </div>
                     </div>
                 
@@ -56,7 +56,7 @@
                 {%for revenue in revenues%}
                     <tr>
                         <td>{{revenue.date|date:"d-m-Y"}}</td>
-                        <td>{{revenue.description}}</td>
+                        <td>{{revenue.description|truncatechars:"65"}} <a href="{%url 'revenueDetail' aid=revenue.id%}">เพิ่มเติม</a></td>
                         <td>{{revenue.amount}}</td>
                         <td></td>
                     </tr>
@@ -64,7 +64,7 @@
                 {%for expense in expenses%}
                     <tr>
                         <td>{{expense.date|date:"d-m-Y"}}</td>
-                        <td>{{expense.description}}</td>
+                        <td>{{expense.description|truncatechars:"65"}} <a href="{%url 'expenseDetail' aid=expense.id%}">เพิ่มเติม</a></td>
                         <td></td>
                         <td>{{expense.amount}}</td>
                     </tr>

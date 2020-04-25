@@ -1,7 +1,53 @@
 {% extends "base-box.html" %}
 {% block text_head %}
+    {% if sell %}
+        รายรับ: ขายผ้า
+    {% elif engage %}
+        รายรับ: จ้างยอม
+    {% endif %}
 {% endblock text_head %}
 {% block desc %}
 {% endblock desc %}
 {% block table %}
+    {% if sell %}
+        <table class="table table-striped" style="margin-top: 10px;">
+            <thead>
+                <tr>
+                    <th scope="col">รหัสการขาย</th>
+                    <th scope="col">จำนวน</th>
+                    <th scope="col">ราคา</th>
+                    <th scope="col">ผ้าจากคลัง</th>
+                </tr>
+            </thead>
+            {% for each in sell %}
+                <tr>
+                    <td scope="col">{{each.list_no}}</td>
+                    <td scope="col">{{each.quantity}}</td>
+                    <td scope="col">{{each.unit_price}}</td>
+                    <td scope="col">{{each.cloth_in_stock}}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% elif engage %}
+        <table class="table table-striped" style="margin-top: 10px;">
+            <thead>
+                <tr>
+                    <th scope="col">รหัสการขาย</th>
+                    <th scope="col">จำนวน</th>
+                    <th scope="col">ราคา</th>
+                    <th scope="col">ประเภทผ้า</th>
+                    <th scope='col'>สี</th>
+                </tr>
+            </thead>
+        {% for each in engage %}
+            <tr>
+                <td scope="col">{{each.list_no}}</td>
+                <td scope="col">{{each.quantity}}</td>
+                <td scope="col">{{each.unit_price}}</td>
+                <td scope="col">{{each.cloth_type}}</td>
+                <td scope="col">{{each.color}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
 {% endblock table %}

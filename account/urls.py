@@ -14,5 +14,6 @@ urlpatterns = [
     path('customer/', views.customer, name='customer'),
     path('customer/add/', views.addCustomer, name='addCustomer'),
     path('employee/edit/<int:eid>/', views.editEmployee, name='editEmployee'),
-    path('account/revenue/detail/<int:aid>/', views.revenueDetail, name='revenueDetail')
+    path('account/revenue/detail/<int:aid>/', views.revenueDetail, name='revenueDetail'),
+    path('account/expense/detail/<int:aid>/', views.expenseDetail, name='expenseDetail'),
 ]

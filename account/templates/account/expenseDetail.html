@@ -1,0 +1,49 @@
+{% extends "base-box.html" %}
+{% block text_head %}
+{% if paid %}
+    จ่ายเงินลูกจ้าง
+{% else %}
+    รายจ่าย
+{% endif %}
+{% endblock text_head %}
+{% block desc %}
+    {% if paid %}
+        <h3>{{paid.employee.fname}} {{paid.employee.lname}}</h3>
+    {% else %}
+        <h3>{{expense.date}}</h3>
+        <h3>{{expense.amount}}</h3>
+        <h3>{{expense.type_expense}}</h3>
+    {% endif %}
+{% endblock desc %}
+{% block table %}
+    {% if paid %}
+        <table class="table table-striped" style="margin-top: 10px;">
+            <thead>
+                    <tr>
+                        <th scope="col">วันที่</th>
+                        <th scope="col">เวลาเริ่มงานเช้า</th>
+                        <th scope="col">เวลาเลิกงานเช้า</th>
+                        <th scope="col">เวลาเริ่มงานบ่าย</th>
+                        <th scope="col">เวลาเลิกงานบ่าย</th>
+                        <th scope="col">ค่าจ้างที่ต้องจ่าย</th>
+                        </tr>
+                </thead>
+                {%for date in time %}
+                    <tr>
+                        <td>{{date.date}}</td>
+                        <td>{{date.from_beforenoon}}</td>
+                        <td>{{date.to_beforenoon|date:"H:i a"}}</td>
+                        <td>{{date.from_afternoon}}</td>
+                        <td>{{date.to_afternoon}}</td>
+                        <td>{{date.total_wage}}</td>
+                        
+                    </tr>
+                {% endfor %}
+        </table>
+        {% else %}
+        <p>{{expense.description}}</p>
+    {% endif %}
+    
+
+
+{% endblock table%}

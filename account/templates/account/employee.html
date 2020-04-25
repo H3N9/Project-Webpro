@@ -41,8 +41,8 @@
                         <td>{{employee.fname}}</td>
                         <td>{{employee.lname}}</td>
                         <td>
-                            <button style="width: 100px; margin-bottom: 3px; " class="btn btn-info" onclick="location.href='{%url 'detail' eid=employee.id %}'">รายละเอียด</button>
-                            <button style="width: 100px;" class="btn btn-danger"  onclick="location.href='{%url 'deleteEmployee' eid=employee.id %}'">เลิกจ้าง</button>
+                            <button class="btn btn-info mb-1" onclick="location.href='{%url 'detail' eid=employee.id %}'">รายละเอียด</button>
+                            <button class="btn btn-danger mb-1"  onclick="location.href='{%url 'deleteEmployee' eid=employee.id %}'">เลิกจ้าง</button>
                         </td>
                     </tr>
                 {% endfor %}

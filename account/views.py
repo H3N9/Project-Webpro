@@ -288,22 +288,23 @@ def revenue(request):
 def paidSalary(request, eid):
     employee = Employee.objects.get(pk=eid)
     if request.method == "POST":
-        st = parse(request.POST.get('st'))
-        ed = parse(request.POST.get('ed'))
+        st = request.POST.get('st')
+        ed = request.POST.get('ed')
         total = request.POST.get('total')
-        date_payment = Working_time.objects.filter(date__range=[st, ed], employee=eid)
-        expense = Expense.objects.create(
-            amount=total,
-            date=datetime.now(),
-            description='จ่ายเงินลูกจ้าง %s %s ของวันที่ %s-%s'%(employee.fname, employee.lname,st,ed),
-            type_expense='1',
-        )
-        paid = Paid_salary.objects.create(
-            expense=expense,
-            start_date=st,
-            end_date=ed,
-            employee=Employee.objects.get(pk=eid),
-        )
+        if total != "0":
+            date_payment = Working_time.objects.filter(date__range=[parse(st), parse(ed)], employee=eid)
+            expense = Expense.objects.create(
+                amount=total,
+                date=datetime.now(),
+                description='จ่ายเงินลูกจ้าง %s %s ของวันที่ %s-%s'%(employee.fname, employee.lname,st,ed),
+                type_expense='1',
+            )
+            paid = Paid_salary.objects.create(
+                expense=expense,
+                start_date=parse(st),
+                end_date=parse(ed),
+                employee=Employee.objects.get(pk=eid),
+            )
     return redirect('/employee/detail/%d'%eid)
 
 @group_required('accountant')
@@ -353,13 +354,24 @@ def editEmployee(request, eid):
 def revenueDetail(request, aid):
     context = {}
     revenue = Revenue.objects.get(pk=aid)
-    if Selling.objects.get(pk=revenue):
+    if Selling.objects.filter(pk=revenue):
         sell = Selling.objects.get(pk=revenue)
         sell_list = Sell_list.objects.filter(selling_revenue=sell)
         context['sell'] = sell_list
-    elif Engaging.objects.get(pk=revenue):
+    elif Engaging.objects.filter(pk=revenue):
         engage = Engaging.objects.get(pk=revenue)
         engage_list = Engage_list.objects.filter(engaging_revenue=engage)
         context['engage'] = engage_list
     context['revenue'] = revenue
     return render(request, 'account/revenueDetail.html', context=context)
+
+def expenseDetail(request, aid):
+    context = {}
+    expense = Expense.objects.get(pk=aid)
+    if Paid_salary.objects.filter():
+        paid = Paid_salary.objects.get(pk=expense)
+        work_time = Working_time.objects.filter(date__range=[paid.start_date,paid.end_date])
+        context['time'] = work_time
+        context['paid'] = paid
+    context['expense'] = expense
+    return render(request, 'account/expenseDetail.html', context=context)
