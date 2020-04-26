@@ -104,9 +104,8 @@
                 }
                 else {
                     sell.appendChild(storeSellHTML[amountForm])
-                    amountForm++
+                    amountForm++ 
                     updateOption()
-                    
                 }
             }
             else if (x == 2) {
@@ -116,7 +115,6 @@
                 else {
                     engage.appendChild(storeEngageHTML[amountForm])
                     amountForm++
-                    updateOption()
                 }
 
             }
@@ -133,10 +131,8 @@
                 else {
                     amountForm--
                     sell.removeChild(storeSellHTML[amountForm])
-                    deleteListSelect(storeSellHTML[amountForm].lastElementChild.lastElementChild)
+                    deleteListSelect(storeSellHTML[amountForm].querySelector('select'))
                     removeValue(storeSellHTML[amountForm])
-                    updateOption()
-                    
                     
                 }
             }
@@ -176,14 +172,14 @@
     function setUp() {
         for (var i = 0; i < 10; i++) {
             if (type == 1) {
-                if (storeSellHTML[i].lastElementChild.lastElementChild.value != "") {
+                if (storeSellHTML[i].querySelector('select').value != "") {
                     sell.appendChild(storeSellHTML[i])
                     listAmount.push(i)
-                    addOption(storeSellHTML[i].lastElementChild.lastElementChild)
+                    addOption(storeSellHTML[i].querySelector('select'))
                 }
             }
             else if (type == 2) {
-                if (storeEngageHTML[i].lastElementChild.lastElementChild.value != "") {
+                if (storeEngageHTML[i].querySelector('select').value != "") {
                     engage.appendChild(storeEngageHTML[i])
                     listAmount.push(i)
                 }
@@ -219,10 +215,11 @@
         }
         if(index > -1)
             listSelect.splice(index,1)
+        updateOption()
     }
     function fullfill(){
-        for(var j = 0;j < amountForm;j++){
-            var x = storeSellHTML[j].lastElementChild.lastElementChild
+        for(var j = 0;j <= amountForm;j++){
+            var x = storeSellHTML[j].querySelector('select')
             for(var i = 0;i< storeOption.length;i++){
                 if(storeOption[i]['sid']==x.id){
                     for(var c = 0;c<storeOption[i]['option'].length;c++){
@@ -237,25 +234,13 @@
     function updateOption(){
         fullfill()
         for(var j = 0;j < amountForm;j++){
-            var x = storeSellHTML[j].lastElementChild.lastElementChild
+            var x = storeSellHTML[j].querySelector('select')
             var count = x.childElementCount
-            var del = 0
-            for(var i = 0 ;i<count;i++){
-                if(i==0){
-                    var first = x.firstElementChild
-                }
-                else if(del == 0){
-                    first = first.nextElementSibling
-                    pre = first.previousElementSibling
-                }
-                else if(del == 1){
-                    first = pre
-                }
-                
+            var child = x.querySelectorAll('option')
+            for(var i=0;i<child.length;i++){
                 for(var c = 0;c < listSelect.length;c++){
-                    if(listSelect[c]['value']==first.value && listSelect[c]['value'] != "" && listSelect[c]['sid'] != x.id){
-                        console.log(first)
-                        var obj = {sid:x.id,option:[first]}
+                    if(listSelect[c]['value']==child[i].value && listSelect[c]['value'] != "" && listSelect[c]['sid'] != x.id){
+                        var obj = {sid:x.id,option:[child[i]]}
                         var index = -1
                         for(var s=0;s<storeOption.length;s++){
                             if(storeOption[s]['sid']==x.id){
@@ -267,14 +252,10 @@
                             storeOption.push(obj)
                         }
                         else{
-                            storeOption[index]['option'].push(first)
+                            storeOption[index]['option'].push(child[i])
                         }
-                        x.removeChild(first)
-                        del = 1
+                        x.removeChild(child[i])
                         break
-                    }
-                    else{
-                        del = 0
                     }
                 }
             }
