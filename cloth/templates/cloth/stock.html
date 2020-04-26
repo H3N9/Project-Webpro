@@ -5,6 +5,8 @@
     {% block desc %}
         <button style="width: 80px;" class="btn btn-primary" onclick="location.href='{%url 'cloth' %}'">ดูผ้า</button>
         <button style="width: 80px;" class="btn btn-info" onclick="location.href='{%url 'color' %}'">ดูสี</button>
+        <button style="color: white;" class="btn btn-success float-right" onclick="location.href='{%url 'addStock' %}'">เพิ่มผ้าในคลัง</button>
+        
     {% endblock desc %}
     {% block table %}
         <table class="table table-striped" style="margin-top: 10px;">
@@ -29,6 +31,5 @@
                       </tr>
                 {% endfor %}
         </table>
-        <button style="color: white;" class="btn btn-success" onclick="location.href='{%url 'addStock' %}'">เพิ่มผ้าในคลัง</button>
 
     {% endblock table %}

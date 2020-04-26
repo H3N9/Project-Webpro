@@ -59,7 +59,7 @@ class Working_timeForm(forms.ModelForm):
             'date': 'วันที่'
         }
         widgets = {
-            'date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
         }
     
     def clean(self):

@@ -1,8 +1,9 @@
 {% extends 'base-box.html' %}
     {% block text_head %}
-        ผ้า
+        ข้อมูลสี
     {% endblock text_head %}
     {% block desc %}
+    <button class="btn btn-success" style="width: 80px; margin-bottom: 10px;" onclick="location.href='{%url 'colorAdd' %}'">เพิ่มสี</button>
     {% endblock desc %}
     {% block table %}
 
@@ -26,6 +27,5 @@
             </tr>  
         {% endfor %}
     </table>
-    <button class="btn btn-success" style="width: 80px;" onclick="location.href='{%url 'colorAdd' %}'">เพิ่มสี</button>
 
     {% endblock table %}

@@ -1,8 +1,9 @@
 {% extends 'base-box.html' %}
     {% block text_head %}
-        ผ้า
+        ข้อมูลผ้า
     {% endblock text_head %}
     {% block desc %}
+    <button class="btn btn-success" style="width: 80px; margin-bottom: 10px;" onclick="location.href='{%url 'clothAdd' %}'">เพิ่มผ้า</button>
     {% endblock desc %}
     {% block table %}
     <table class="table table-striped">
@@ -24,6 +25,6 @@
             </tr>  
         {% endfor %}
     </table>
-    <button class="btn btn-success" style="width: 80px;" onclick="location.href='{%url 'clothAdd' %}'">เพิ่มผ้า</button>
+    
 
     {% endblock table %}
