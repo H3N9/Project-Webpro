@@ -18,11 +18,13 @@
                 </div>
                 <div class="form-group">
                     <label for="formGroupExampleInput">{{form.birthdate.label}}</label>
-                    {{form.birthdate}}
+                    {{form.birthdate}}                    
+                    <p class="text-danger">{{form.birthdate.errors.as_text }}</p>
                 </div>
                 <div class="form-group">
                     <label for="formGroupExampleInput">{{form.hire_date.label}}</label>
                     {{form.hire_date}}
+                    <p class="text-danger">{{form.hire_date.errors.as_text }}</p>                    
                 </div>
                 <div class="form-group">
                     <label for="formGroupExampleInput">{{form.rating_wage_per_hour.label}}</label>

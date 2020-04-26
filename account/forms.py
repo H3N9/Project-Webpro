@@ -1,6 +1,7 @@
 from django import forms
 from . import models
 from django.core.exceptions import ValidationError
+from datetime import date
 from cloth.models import Cloth_in_stock
 
 
@@ -22,6 +23,19 @@ class EmployeeForm(forms.ModelForm):
             'birthdate': forms.DateInput(attrs={'type': 'date', 'class':'form-control'}),
             'rating_wage_per_hour': forms.DateInput(attrs={'class': 'form-control','oninput':"positive(document.getElementById(\'id_rating_wage_per_hour\'))"})
         }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        hire_date = cleaned_data.get("hire_date")
+        birthdate = cleaned_data.get("birthdate")
+
+        if hire_date > date.today():            
+            msg = "กรุณากรอกวันที่ตามจริง"
+            self.add_error('hire_date', msg)
+        if birthdate > date.today():
+            msg = "กรุณากรอกวันที่ตามจริง"
+            self.add_error('birthdate', msg)
+
 
 class Working_timeForm(forms.ModelForm):
     from_afternoon = forms.TimeField(required=False, 
@@ -45,15 +59,19 @@ class Working_timeForm(forms.ModelForm):
             'date': 'วันที่'
         }
         widgets = {
-            'date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
         }
     
     def clean(self):
         clean_data = super().clean()
+        date = clean_data.get("date")
         fbn = clean_data.get('from_beforenoon')
         tbn = clean_data.get('to_beforenoon')
         fan = clean_data.get('from_afternoon')
         tan = clean_data.get('to_afternoon')
+        if date > date.today():            
+            msg = "กรุณากรอกวันที่ตามจริง"
+            self.add_error('date', msg)
         if fbn or tbn:
             if tbn < fbn:
                 raise ValidationError(
@@ -61,6 +79,8 @@ class Working_timeForm(forms.ModelForm):
                 )
         if fan or tan:
             if tan < tbn:
+                print('hello')
+                msg = "ข้อมูลเวลาผิดพลาด"
                 raise ValidationError(
                     'ข้อมูลเวลาผิดพลาด'
                 )

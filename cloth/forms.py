@@ -25,6 +25,7 @@ class ColorForm(forms.ModelForm):
         widgets = {            
             'name':forms.DateInput(attrs={ 'class':'form-control'}),
         }
+    
 
 class Cloth_in_stockForm(forms.ModelForm):
     class Meta:
@@ -42,3 +43,4 @@ class Cloth_in_stockForm(forms.ModelForm):
             'color':forms.Select(attrs={'class':'form-control'}),
             'price':forms.NumberInput(attrs={'class':'form-control','oninput':"positive(document.getElementById(\'id_price\'))"}),
         }
+    
