@@ -83,6 +83,7 @@
     <input style="width: 100px;" class="btn btn-success" type="submit" name="" id="" value="ตกลง">
 </form>
 
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
     var tag = document.querySelector('#amountForm')
     var amountForm = tag.value
@@ -91,7 +92,6 @@
     var storeSellHTML = document.querySelectorAll('.formsetSell')
     var storeOption = []
     var storeEngageHTML = document.querySelectorAll('.formsetEngage')
-    var type = document.querySelector('#id_type_revenue').value
     sell.innerHTML = ""
     engage.innerHTML = ""
     var listAmount = []
@@ -133,7 +133,7 @@
                     sell.removeChild(storeSellHTML[amountForm])
                     deleteListSelect(storeSellHTML[amountForm].querySelector('select'))
                     removeValue(storeSellHTML[amountForm])
-                    
+                    setTotal()
                 }
             }
             else if (x == 2) {
@@ -154,12 +154,14 @@
     function chooseForm(x) {
         if (x == 1) {
             resetUp(engage)
+            setTotal()
             engage.innerHTML = ""
             amountForm = 0
             addForm(x)
         }
         else if (x == 2) {
             resetUp(sell)
+            setTotal()
             sell.innerHTML = ""
             listSelect = []
             updateOption()
@@ -170,15 +172,18 @@
     
 
     function setUp() {
+        var type_re = document.querySelector('#id_type_revenue').value
         for (var i = 0; i < 10; i++) {
-            if (type == 1) {
+            if (type_re == 1) {
                 if (storeSellHTML[i].querySelector('select').value != "") {
                     sell.appendChild(storeSellHTML[i])
                     listAmount.push(i)
                     addOption(storeSellHTML[i].querySelector('select'))
+                    assign(storeSellHTML[i].querySelector('#id_form-'+i+'-quantity'))
+                    setTotal()
                 }
             }
-            else if (type == 2) {
+            else if (type_re == 2) {
                 if (storeEngageHTML[i].querySelector('select').value != "") {
                     engage.appendChild(storeEngageHTML[i])
                     listAmount.push(i)
@@ -186,7 +191,7 @@
             }
         }
     }
-    setUp()
+    
 
     function addOption(x){
         var object = {sid:x.id,value:x.value}
@@ -204,6 +209,10 @@
             listSelect[index]['value'] = x.value
         }
         updateOption()
+        var txt = x.id
+        var numb = txt.match(/\d/g)
+        numb = numb.join("")
+        checkValue(x, numb)
     }
 
     function deleteListSelect(x){
@@ -218,7 +227,7 @@
         updateOption()
     }
     function fullfill(){
-        for(var j = 0;j <= amountForm;j++){
+        for(var j = 0;j < amountForm;j++){
             var x = storeSellHTML[j].querySelector('select')
             for(var i = 0;i< storeOption.length;i++){
                 if(storeOption[i]['sid']==x.id){
@@ -297,6 +306,82 @@
             }
         }
     }
+
+    function setPrice(child, unit, value){
+        axios.get('/account/revenue/cloth/'+child.value+'/')
+        .then(function(response){
+            unit.value = value*response.data.price
+            setTotal()
+        })
+        
+    }
+    function setTotal(){
+        var total = 0
+        var totalField = document.querySelector('#id_amount')
+        var type_re = document.querySelector('#id_type_revenue').value
+        if(type_re == 1){
+            for(var i=0;i<amountForm;i++){
+                var value = storeSellHTML[i].querySelector('#id_form-'+i+'-unit_price').value
+                if(value > 0){
+                    total += parseFloat(value)
+                }
+            }
+        }
+        else if(type_re == 2){
+            for(var i=0;i<amountForm;i++){
+                var value = storeEngageHTML[i].querySelector('#id_form-'+i+'-unit_price').value
+                if(value > 0){
+                    total += parseFloat(value)
+                }
+            }
+        }
+        totalField.value = total
+    }
+
+    function checkValue(child, id){
+        var parent = child.parentElement.parentElement
+        if(child == "[object HTMLSelectElement]"){
+            var quantity = parent.querySelector('#id_form-'+id+'-quantity')
+            var unit = parent.querySelector('#id_form-'+id+'-unit_price')
+            if(quantity.value != "" && child.value != ""){
+                setPrice(child, unit, quantity.value)
+            }
+            else{
+                unit.value = ""
+                setTotal()
+            }
+        }
+        else if(child == "[object HTMLInputElement]"){
+            var select = parent.querySelector('#id_form-'+id+'-cloth_in_stock')
+            var unit = parent.querySelector('#id_form-'+id+'-unit_price')
+            if(select.value != ""  && child.value != ""){
+                setPrice(select, unit, child.value)
+            }
+            else{
+                unit.value = ""
+                setTotal()
+            }
+        }
+    }
+
+    function assign(child){
+        if(child.value < 0){
+            child.value = 0
+        }
+        var txt = child.id
+        var numb = txt.match(/\d/g)
+        numb = numb.join("")
+        checkValue(child, numb)
+    }
+
+    function assign2(child){
+        if(child.value < 0){
+            child.value = 0
+        }
+        setTotal()
+    }
+    setUp()
+    
 
 
 </script>

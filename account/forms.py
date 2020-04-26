@@ -87,11 +87,12 @@ class RevenueForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(RevenueForm, self).__init__(*args, **kwargs)
         self.fields['customer'].required = False
+
     class Meta:
         model = models.Revenue
         fields = '__all__'
         labels = {
-            'amount':'จำนวนเงิน',
+            'amount':'จำนวนเงินทั้งหมด',
             'description':'รายละเอียด',
             'customer':'ลูกค้า',
             'type_revenue':'ประเภทรายรับ',
@@ -139,16 +140,19 @@ class CustomerForm(forms.ModelForm):
         }
 
 class Sell_listForm(forms.ModelForm):
+
+
+        
     class Meta:
         model = models.Sell_list
         exclude = ['selling_revenue','list_no']
         labels = {
             'quantity':'จำนวน',
-            'unit_price':'ราคาทั้งหมด',
+            'unit_price':'ราคาต่อหน่วย',
             'cloth_in_stock':'ผ้าจากในคลัง',
         }
         widgets = {
-            'quantity':forms.NumberInput(attrs={'oninput':"positive(this)", 'class':'form-control'}),
+            'quantity':forms.NumberInput(attrs={'oninput':"assign(this)", 'class':'form-control'}),
             'unit_price': forms.NumberInput(attrs={'oninput':"positive(this)", 'class':'form-control'}),
             'cloth_in_stock': forms.Select(attrs={ 'class':'form-control', 'oninput':"addOption(this)"})
         }
@@ -171,7 +175,7 @@ class Engage_listForm(forms.ModelForm):
         }
         widgets = {
             'quantity': forms.NumberInput(attrs={'oninput':"positive(this)", 'class':'form-control'}),
-            'unit_price': forms.NumberInput(attrs={'oninput':"positive(this)", 'class':'form-control'}),
+            'unit_price': forms.NumberInput(attrs={'oninput':"assign2(this)", 'class':'form-control'}),
             'cloth_type': forms.Select(attrs={ 'class':'form-control'}),
             'color': forms.Select(attrs={ 'class':'form-control'})
         }

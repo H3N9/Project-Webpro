@@ -34,7 +34,7 @@ class Cloth_in_stockForm(forms.ModelForm):
             'quantity':'จำนวน',
             'cloth_type': 'ประเภทผ้า',
             'color': 'สี',
-            'price': 'ราคา'            
+            'price': 'ราคาต่อหน่วย'            
         }
         widgets = {
             'quantity':forms.NumberInput(attrs={'class':'form-control','oninput':"positive(document.getElementById(\'id_quantity\'))"}),

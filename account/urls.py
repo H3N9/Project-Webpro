@@ -17,4 +17,5 @@ urlpatterns = [
     path('employee/edit/<int:eid>/', views.editEmployee, name='editEmployee'),
     path('account/revenue/detail/<int:aid>/', views.revenueDetail, name='revenueDetail'),
     path('account/expense/detail/<int:aid>/', views.expenseDetail, name='expenseDetail'),
+    path('account/revenue/cloth/<int:cid>/', views.getCloth, name='getCloth'),
 ]

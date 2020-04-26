@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import EmployeeForm, Working_timeForm, ExpenseForm, RevenueForm, Paid_salaryForm, CustomerForm, Sell_listForm, Engage_listForm
 from .models import Employee, Working_time, Expense, Paid_salary, Customer, Revenue, Sell_list, Engage_list, Selling, Engaging
+from cloth.models import Cloth_in_stock
 from datetime import datetime
 from dateutil.parser import parse
 from django.contrib.auth.decorators import login_required
@@ -114,6 +115,11 @@ def sendDataAPI(request, eid):
         employee = Employee.objects.get(pk=eid)
         serializer = EmployeeSerializer(instance=employee)
         return JsonResponse(serializer.data, status=200, safe=False)"""
+def getCloth(request, cid):
+    if request.method == "GET":
+        price = Cloth_in_stock.objects.get(pk=cid).price
+        data = {'price':price}
+        return JsonResponse(data, status=200, safe=False)
 
 @group_required('accountant')
 def deleteEmployee(request, eid):
@@ -227,6 +233,7 @@ def revenue(request):
             revenue_form = revenue_form.cleaned_data
             if revenue_form['type_revenue'] == '1':
                 sell_data = sell_form(request.POST)
+                
                 if sell_data.is_valid():
                     revenue = Revenue.objects.create(
                         amount=revenue_form['amount'],
@@ -252,6 +259,7 @@ def revenue(request):
                 else:
                     revenue_form = RevenueForm(request.POST)
                     sell_formSet = sell_form(request.POST)
+                    print("------------------------------------------",sell_form)
                     amountForm = request.POST.get('amountForm')
             elif revenue_form['type_revenue'] == '2':
                 engage_data = engage_form(request.POST)
