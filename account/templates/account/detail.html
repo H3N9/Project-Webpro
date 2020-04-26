@@ -62,7 +62,6 @@
                         <th scope="col">เวลาเริ่มงานบ่าย</th>
                         <th scope="col">เวลาเลิกงานบ่าย</th>
                         <th scope="col">ค่าจ้างที่ต้องจ่าย</th>
-                        <th scope="col">สถานะ</th>
                       </tr>
                 </thead>
                 {%for date in date_payment%}
@@ -73,7 +72,6 @@
                         <td>{{date.from_afternoon}}</td>
                         <td>{{date.to_afternoon}}</td>
                         <td>{{date.total_wage}}</td>
-                        {{val}}
                         
                     </tr>
                 {% endfor %}
