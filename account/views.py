@@ -189,8 +189,8 @@ def account(request):
     revenues = Revenue.objects.all()
     paid = Paid_salaryForm()
     if request.method == 'POST':
-       paid = Paid_salaryForm(request.POST)
-       if paid.is_valid():
+        paid = Paid_salaryForm(request.POST)
+        if paid.is_valid():
             data = paid.cleaned_data
             expenses = Expense.objects.filter(date__range=[data['start_date'], data['end_date']])
             revenues = Revenue.objects.filter(date__range=[data['start_date'], data['end_date']])

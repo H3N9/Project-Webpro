@@ -14,7 +14,8 @@
                 <button class="btn btn-danger" onclick="location.href='{%url 'expense' %}'">เพิ่มรายจ่าย</button>
             </div>
             <div class="col-10">
-                <form action="{%url 'account'%}" method='POST'></form>
+                <form action="{%url 'account'%}" method='POST'>
+                {% csrf_token %}
                     <div class="row">
                         <div class="mt-2">
                             {{paid.start_date.label}}
