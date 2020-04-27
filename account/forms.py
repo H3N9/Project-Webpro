@@ -107,17 +107,17 @@ class RevenueForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(RevenueForm, self).__init__(*args, **kwargs)
         self.fields['customer'].required = False
-
+        self.fields['amount'].widget.attrs['readonly'] = True 
     class Meta:
         model = models.Revenue
-        fields = '__all__'
+        fields = '__all__'        
         labels = {
             'amount':'จำนวนเงินทั้งหมด',
             'description':'รายละเอียด',
             'customer':'ลูกค้า',
             'type_revenue':'ประเภทรายรับ',
         }
-        widgets = {
+        widgets = {            
             'amount':forms.NumberInput(attrs={ 'class':'form-control','oninput':"positive(document.getElementById(\'id_amount\'))"}),
             'description':forms.Textarea(attrs={ 'class':'form-control', 'rows':'3'}),
             'customer':forms.Select(attrs={ 'class':'form-control'}),
@@ -144,7 +144,7 @@ class Paid_salaryForm(forms.ModelForm):
         if date_data1 > date_data2:
             raise ValidationError('ข้อมูลเวลาผิดพลาด')
 
-class CustomerForm(forms.ModelForm):
+class CustomerForm(forms.ModelForm):    
     class Meta:
         model = models.Customer
         fields = '__all__'
@@ -160,9 +160,9 @@ class CustomerForm(forms.ModelForm):
         }
 
 class Sell_listForm(forms.ModelForm):
-
-
-        
+    def __init__(self, *args, **kwargs):
+        super(Sell_listForm, self).__init__(*args, **kwargs)
+        self.fields['unit_price'].widget.attrs['readonly'] = True 
     class Meta:
         model = models.Sell_list
         exclude = ['selling_revenue','list_no']

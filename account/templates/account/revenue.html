@@ -36,7 +36,7 @@
         {%for sell in sells %}
 
         <div class="form-group formsetSell">
-            {{sell.non_field_errors}}
+            <p class="text-danger">{{sell.non_field_errors.as_text}}</p>
             <div class="form-group">
                 <label for="{{sell.quantity.id_for_label}}">{{sell.quantity.label}}</label>
                 {{sell.quantity}}
