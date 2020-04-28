@@ -187,6 +187,13 @@ def account(request):
     context = {}
     expenses = Expense.objects.all()
     revenues = Revenue.objects.all()
+    allEx = 0
+    allRe = 0
+    for ex in expenses:
+        allEx = allEx + ex.amount
+    for re in revenues:
+        allRe = allRe + re.amount
+    profit = allRe-allEx
     paid = Paid_salaryForm()
     if request.method == 'POST':
         paid = Paid_salaryForm(request.POST)
@@ -197,6 +204,9 @@ def account(request):
     context['paid'] = paid
     context['revenues'] = revenues
     context['expenses'] = expenses
+    context['allEx'] = allEx
+    context['allRe'] = allRe
+    context['profit'] = profit
     return render(request, 'account/account.html', context=context)
 
 @group_required('accountant')

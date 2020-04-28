@@ -3,7 +3,7 @@
 <div class="container-fluid h-100">
         <div class="row justify-content-center align-items-center h-100">
             <div class="col col-sm-6 col-md-6 col-lg-4 col-xl-3">
-                
+                <h2 style="text-align: center; margin-bottom: 20px;">หยู่เซ้งฟอกย้อม</h2>
                 <form action="{%url 'login'%}" method='POST'>
                 {% csrf_token %}
                     <div class="form-group">
@@ -12,12 +12,14 @@
                     <div class="form-group">
                         <input class="form-control form-control-lg" placeholder="Password" value='{{password}}' type="password" name='password'>                    
                     </div>
+                    {% if errors %}
                     <div class="alert alert-danger" role="alert">
                         {{errors}}
                     </div>
+                    {% endif %}
                     {% comment %} <p class="text-danger">{{errors}}</p> {% endcomment %}
                     <div class="form-group">
-                        <button class="btn btn-info btn-lg btn-block">Sign In</button>
+                        <button class="btn btn-info btn-lg btn-block">เข้าสู่ระบบ</button>
                     </div>
 
                 </form>
