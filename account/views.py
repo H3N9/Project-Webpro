@@ -19,7 +19,7 @@ from django.forms import formset_factory
 
 
 # Create your views here.
-@group_required('accountant')
+@group_required('accountant') #show employee
 def showEmployee(request):
     context = {}
     employees = Employee.objects.all().order_by('id')
@@ -27,7 +27,7 @@ def showEmployee(request):
         fname = request.GET.get('fname', '')
         lname = request.GET.get('lname', '')
         if fname:
-            employees = Employee.objects.filter(fname__icontains=fname)
+            employees = Employee.objects.filter(fname__icontains=fname)  #search fname and lname
         elif lname:
             employees = Employee.objects.filter(lname__icontains=lname)
         elif fname and lname:
@@ -39,7 +39,7 @@ def showEmployee(request):
 def addEmployee(request):
     context = {}
     form = EmployeeForm()
-    if request.method == 'POST':
+    if request.method == 'POST':             #add employee nothing in here
         form = EmployeeForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
@@ -58,17 +58,16 @@ def addEmployee(request):
 
 @group_required('accountant')
 def detail(request, eid):
-    context = {}
+    context = {}      #detail of employee
     total = 0
     paid = 0
     employee = Employee.objects.get(pk=eid)
-    employee.age = datetime.now().year-employee.birthdate.year
+    employee.age = datetime.now().year-employee.birthdate.year   #update age when call this fucntion
     employee.save()
     date_payment = Working_time.objects.filter(employee=eid)
     paid_salarys = Paid_salary.objects.filter(employee=eid)
-    paidList = checkTimeMath(paid_salarys, date_payment)
     form = Paid_salaryForm()
-    if request.method == "POST":
+    if request.method == "POST":        #select time to paid salary
         form = Paid_salaryForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
@@ -76,15 +75,14 @@ def detail(request, eid):
             for each in date_payment:
                 has = 0
                 for paid_salary in paid_salarys:
-                    if each.date >= paid_salary.start_date and each.date <= paid_salary.end_date:
+                    if each.date >= paid_salary.start_date and each.date <= paid_salary.end_date:  #check if time working has in payment
                         has = 1
                         break
                 if not has:
-                    total += each.total_wage
+                    total += each.total_wage  #total of time working to pay
             paid = 1
             context['st'] = data['start_date']
-            context['ed'] = data['end_date']
-    context['paidList'] = paidList 
+            context['ed'] = data['end_date']   #send to paid_salary funtion through HTML input hidden
     context['paid_salarys'] = paid_salarys
     context['paid'] = paid
     context['total'] = total
@@ -94,19 +92,6 @@ def detail(request, eid):
     context['eid'] = eid
     return render(request, 'account/detail.html', context=context)
 
-def checkTimeMath(payment, date):
-    paidList = []
-    for each in date:
-        has = 0
-        for paid in payment:
-            if each.date >= paid.start_date and each.date <= paid.end_date:
-                paidList.append(1)
-                has = 1
-                break 
-        if not has:
-            paidList.append(0)
-                
-    return paidList
 
 """@csrf_exempt
 def sendDataAPI(request, eid):
@@ -114,15 +99,15 @@ def sendDataAPI(request, eid):
     if request.method == 'GET':
         employee = Employee.objects.get(pk=eid)
         serializer = EmployeeSerializer(instance=employee)
-        return JsonResponse(serializer.data, status=200, safe=False)"""
+        return JsonResponse(serializer.data, status=200, safe=False)"""  #prototype
 def getCloth(request, cid):
-    if request.method == "GET":
+    if request.method == "GET":                #return price of cloth_in_stock to revenue from
         price = Cloth_in_stock.objects.get(pk=cid).price
         data = {'price':price}
         return JsonResponse(data, status=200, safe=False)
 
 @group_required('accountant')
-def deleteEmployee(request, eid):
+def deleteEmployee(request, eid):   #delete Employee
     employee = Employee.objects.get(pk=eid)
     employee.delete()
     return redirect('showEmployee')
@@ -130,19 +115,19 @@ def deleteEmployee(request, eid):
 @group_required('accountant')
 def addTime(request, eid):
     context = {}
-    formTime = Working_timeForm()
+    formTime = Working_timeForm()    #add Time working
     employee = Employee.objects.get(pk=eid)
     if request.method == 'POST':
         formTime = Working_timeForm(request.POST)
         if formTime.is_valid():
-            data = formTime.cleaned_data
-            amount = checkTime(
+            data = formTime.cleaned_data         #check time for pay if time has OT time*1.5
+            amount = checkTime(                
                 data['from_beforenoon'],
                 data['to_beforenoon'],
                 data['from_afternoon'],
                 data['to_afternoon'],
                 employee.rating_wage_per_hour,
-                )
+                )                                         #create Working_time
             add = Working_time.objects.create(
                 date=data['date'],
                 employee=Employee.objects.get(pk=eid),
@@ -161,32 +146,33 @@ def addTime(request, eid):
     return render(request, 'account/addTime.html', context=context)
 
 
-def checkTime(start_bn, end_bn, start_an,end_an, rate):
-    if start_bn and end_bn and start_an and end_an:
+def checkTime(start_bn, end_bn, start_an,end_an, rate):    #check time
+    if start_bn and end_bn and start_an and end_an: #if employee work all time
         bn = (end_bn.hour*60+end_bn.minute)-(start_bn.hour*60+start_bn.minute)
         an = (end_an.hour*60+end_an.minute)-(start_an.hour*60+start_an.minute)
         hour = bn//60+an//60
-    elif start_bn and end_bn:
+    elif start_bn and end_bn: #if employee work in morning only
         bn = (end_bn.hour*60+end_bn.minute)-(start_bn.hour*60+start_bn.minute)
         hour = bn//60
-    elif start_an and end_an:
+    elif start_an and end_an:  #if employee work in afternoon only 
         an = (end_an.hour*60+end_an.minute)-(start_an.hour*60+start_an.minute)
         hour = an//60
     
-    if hour > 8:
+    if hour > 8:  #check OT (over time)
         extra = (hour-8)*rate*1.5
         normal = 8*rate
-        return [normal,extra]
+        return [normal,extra] #return normal wage and OT wage
     elif hour <= 8 and hour >= 1:
         normal = hour*rate
         return [normal,0]
 
 
 @group_required('accountant')
-def account(request):
+def account(request):  #show account Expense and Revenue
     context = {}
     expenses = Expense.objects.all()
     revenues = Revenue.objects.all()
+<<<<<<< HEAD
     allEx = 0
     allRe = 0
     for ex in expenses:
@@ -195,9 +181,12 @@ def account(request):
         allRe = allRe + re.amount
     profit = allRe-allEx
     paid = Paid_salaryForm()
+=======
+    paid = Paid_salaryForm()  #form of date but it can use for Start_date to End_date
+>>>>>>> f7583b677fcf6d9f7b48de5cbfa47e68a550aac8
     if request.method == 'POST':
         paid = Paid_salaryForm(request.POST)
-        if paid.is_valid():
+        if paid.is_valid(): #search Expense and revenues
             data = paid.cleaned_data
             expenses = Expense.objects.filter(date__range=[data['start_date'], data['end_date']])
             revenues = Revenue.objects.filter(date__range=[data['start_date'], data['end_date']])
@@ -210,7 +199,7 @@ def account(request):
     return render(request, 'account/account.html', context=context)
 
 @group_required('accountant')
-def expense(request):
+def expense(request):  #form of expense with paid salary
     context = {}
     form = ExpenseForm()
     if request.method=='POST':
@@ -229,22 +218,22 @@ def expense(request):
 
 
 @group_required('accountant')
-def revenue(request):
+def revenue(request):   #revenue form
     context = {}
     amountForm = 1
     revenue_form = RevenueForm()
-    sell_form = formset_factory(Sell_listForm, extra=10)
-    engage_form = formset_factory(Engage_listForm, extra=10)
+    sell_form = formset_factory(Sell_listForm, extra=10) #form factory 10 form
+    engage_form = formset_factory(Engage_listForm, extra=10)   #form factory 10 form
     sell_formSet = sell_form()
     engage_formSet = engage_form()
-    if request.method=='POST':
+    if request.method=='POST':   #post with send 2 form
         revenue_form = RevenueForm(request.POST)
         if revenue_form.is_valid():
             revenue_form = revenue_form.cleaned_data
-            if revenue_form['type_revenue'] == '1':
+            if revenue_form['type_revenue'] == '1': #check type of revenue
                 sell_data = sell_form(request.POST)
                 
-                if sell_data.is_valid():
+                if sell_data.is_valid(): #valid
                     revenue = Revenue.objects.create(
                         amount=revenue_form['amount'],
                         date=datetime.now(),
@@ -254,24 +243,23 @@ def revenue(request):
                     )
                     selling = Selling.objects.create(revenue=revenue)
                     for sell_form in sell_data:
-                        if sell_form.cleaned_data.get('quantity'):
-                            if sell_form.is_valid():
+                        if sell_form.cleaned_data.get('quantity'):   #check it has full fill in form
+                            if sell_form.is_valid():  #not working anymore because Javascripts valid
                                 sell_list = Sell_list.objects.create(
                                     selling_revenue=selling,
                                     quantity=sell_form.cleaned_data['quantity'],
                                     unit_price=sell_form.cleaned_data['unit_price'],
                                     cloth_in_stock=sell_form.cleaned_data['cloth_in_stock']
                                 )
-                                cloth = sell_form.cleaned_data['cloth_in_stock']
+                                cloth = sell_form.cleaned_data['cloth_in_stock'] #decrease cloth from stock
                                 cloth.quantity = cloth.quantity-sell_form.cleaned_data['quantity']
                                 cloth.save()
                     return redirect('account')
                 else:
                     revenue_form = RevenueForm(request.POST)
                     sell_formSet = sell_form(request.POST)
-                    print("------------------------------------------",sell_form)
                     amountForm = request.POST.get('amountForm')
-            elif revenue_form['type_revenue'] == '2':
+            elif revenue_form['type_revenue'] == '2': #engage nothing
                 engage_data = engage_form(request.POST)
                 if engage_data.is_valid():
                     revenue = Revenue.objects.create(
@@ -303,14 +291,14 @@ def revenue(request):
     return render(request, 'account/revenue.html', context=context)
 
 @group_required('accountant')
-def paidSalary(request, eid):
+def paidSalary(request, eid):  #paid salary
     employee = Employee.objects.get(pk=eid)
     if request.method == "POST":
         st = request.POST.get('st')
-        ed = request.POST.get('ed')
+        ed = request.POST.get('ed')  #POST from HTML of detail of Employee
         total = request.POST.get('total')
-        if total != "0":
-            date_payment = Working_time.objects.filter(date__range=[parse(st), parse(ed)], employee=eid)
+        if total != "0": #0 it will be not save in database
+            date_payment = Working_time.objects.filter(date__range=[parse(st), parse(ed)], employee=eid) #create expense
             expense = Expense.objects.create(
                 amount=total,
                 date=datetime.now(),
@@ -326,14 +314,14 @@ def paidSalary(request, eid):
     return redirect('/employee/detail/%d'%eid)
 
 @group_required('accountant')
-def customer(request):
+def customer(request): #show customer
     context = {}
     customer = Customer.objects.all()
     context['customer'] = customer
     return render(request, 'account/customer.html', context=context)
 
 @group_required('accountant')
-def addCustomer(request):
+def addCustomer(request): #add customer
     context = {}
     form = CustomerForm()
     if request.method == 'POST':
@@ -350,7 +338,7 @@ def addCustomer(request):
     return render(request, 'account/addCustomer.html', context=context)
 
 @group_required('accountant')
-def editCustomer(request, cid):
+def editCustomer(request, cid): #edit customer
     context = {}
     customer = Customer.objects.get(pk=cid)
     form = CustomerForm(instance=customer)
@@ -368,7 +356,7 @@ def editCustomer(request, cid):
     return render(request, 'account/editCustomer.html', context=context)
 
 @group_required('accountant')
-def editEmployee(request, eid):
+def editEmployee(request, eid): #edit employee
     context = {}
     employee = Employee.objects.get(pk=eid)
     form = EmployeeForm(instance=employee)
@@ -387,7 +375,8 @@ def editEmployee(request, eid):
     context['employee'] = employee
     return render(request, 'account/editEmployee.html', context=context)
 
-def revenueDetail(request, aid):
+@group_required('accountant')
+def revenueDetail(request, aid): #show revenue detail
     context = {}
     revenue = Revenue.objects.get(pk=aid)
     if Selling.objects.filter(pk=revenue):
@@ -401,12 +390,13 @@ def revenueDetail(request, aid):
     context['revenue'] = revenue
     return render(request, 'account/revenueDetail.html', context=context)
 
-def expenseDetail(request, aid):
+@group_required('accountant')
+def expenseDetail(request, aid): #expense detail 
     context = {}
     expense = Expense.objects.get(pk=aid)
-    if Paid_salary.objects.filter():
+    if Paid_salary.objects.filter(pk=expense): #if expense has paid_salary
         paid = Paid_salary.objects.get(pk=expense)
-        work_time = Working_time.objects.filter(date__range=[paid.start_date,paid.end_date])
+        work_time = Working_time.objects.filter(date__range=[paid.start_date,paid.end_date], employee=paid.employee.id)
         context['time'] = work_time
         context['paid'] = paid
     context['expense'] = expense
