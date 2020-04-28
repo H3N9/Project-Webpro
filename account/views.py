@@ -172,7 +172,6 @@ def account(request):  #show account Expense and Revenue
     context = {}
     expenses = Expense.objects.all()
     revenues = Revenue.objects.all()
-<<<<<<< HEAD
     allEx = 0
     allRe = 0
     for ex in expenses:
@@ -181,9 +180,6 @@ def account(request):  #show account Expense and Revenue
         allRe = allRe + re.amount
     profit = allRe-allEx
     paid = Paid_salaryForm()
-=======
-    paid = Paid_salaryForm()  #form of date but it can use for Start_date to End_date
->>>>>>> f7583b677fcf6d9f7b48de5cbfa47e68a550aac8
     if request.method == 'POST':
         paid = Paid_salaryForm(request.POST)
         if paid.is_valid(): #search Expense and revenues
