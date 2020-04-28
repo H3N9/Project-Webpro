@@ -16,6 +16,6 @@ class EmployeeSerializer(serializers.ModelSerializer):
     def create(self,  validated_data):
         working_times_data = validated_data.pop('working_times')
         employee = models.Employee.objects.create(**validated_data)
-        for working_time_data in working_times_data:
+        for working_time_data in working_times_data:                                            #not use but it's prototype
             models.Working_time.objects.create(employee=employee, **working_time_data)
         return employee
