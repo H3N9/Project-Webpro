@@ -9,6 +9,8 @@
 {% block desc %}
     {% if paid %}
         <h3>{{paid.employee.fname}} {{paid.employee.lname}}</h3>
+        <h3>{{expense.date}}</h3>
+        <h3>{{expense.amount}} (คิดเฉพาะวันที่ยังไม่จ่าย)</h3>
     {% else %}
         <h3>{{expense.date}}</h3>
         <h3>{{expense.amount}}</h3>

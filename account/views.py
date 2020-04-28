@@ -377,6 +377,7 @@ def editEmployee(request, eid):
     context['employee'] = employee
     return render(request, 'account/editEmployee.html', context=context)
 
+@group_required('accountant')
 def revenueDetail(request, aid):
     context = {}
     revenue = Revenue.objects.get(pk=aid)
@@ -391,12 +392,13 @@ def revenueDetail(request, aid):
     context['revenue'] = revenue
     return render(request, 'account/revenueDetail.html', context=context)
 
+@group_required('accountant')
 def expenseDetail(request, aid):
     context = {}
     expense = Expense.objects.get(pk=aid)
     if Paid_salary.objects.filter():
         paid = Paid_salary.objects.get(pk=expense)
-        work_time = Working_time.objects.filter(date__range=[paid.start_date,paid.end_date])
+        work_time = Working_time.objects.filter(date__range=[paid.start_date,paid.end_date], employee=paid.employee.id)
         context['time'] = work_time
         context['paid'] = paid
     context['expense'] = expense
