@@ -10,10 +10,10 @@
     {% if paid %}
         <h3>{{paid.employee.fname}} {{paid.employee.lname}}</h3>
         <h3>{{expense.date}}</h3>
-        <h3>{{expense.amount}} (คิดเฉพาะวันที่ยังไม่จ่าย)</h3>
+        <h3 style="color: red;">จำนวน {{expense.amount}} บาท</h3>
     {% else %}
         <h3>{{expense.date}}</h3>
-        <h3>{{expense.amount}}</h3>
+        <h3 style="color: red;">จำนวน {{expense.amount}} บาท</h3>
         <h3>ค่าใช้จ่ายอื่น ๆ</h3>
     {% endif %}
 {% endblock desc %}
@@ -43,7 +43,9 @@
                 {% endfor %}
         </table>
         {% else %}
-        <p>{{expense.description}}</p>
+        <div class="alert alert-secondary" role="alert">
+            <p style="font-size: 18px;">{{expense.description}}</p>
+        </div>
     {% endif %}
     
 

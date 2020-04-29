@@ -73,7 +73,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'project.wsgi.application'
-
+USE_THOUSAND_SEPARATOR = True
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
