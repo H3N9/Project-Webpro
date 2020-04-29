@@ -57,7 +57,7 @@
                     <tr>
                         <td>{{revenue.date|date:"d-m-Y"}}</td>
                         <td>{{revenue.description|truncatechars:"65"}} <a href="{%url 'revenueDetail' aid=revenue.id%}">เพิ่มเติม</a></td>
-                        <td>{{revenue.amount}} บาท</td>
+                        <td style="color: green;">{{revenue.amount}} บาท</td>
                         <td></td>
                     </tr>
                 {%endfor%}
@@ -66,18 +66,18 @@
                         <td>{{expense.date|date:"d-m-Y"}}</td>
                         <td>{{expense.description|truncatechars:"65"}} <a href="{%url 'expenseDetail' aid=expense.id%}">เพิ่มเติม</a></td>
                         <td></td>
-                        <td>{{expense.amount}} บาท</td>
+                        <td style="color: red;">{{expense.amount}} บาท</td>
                     </tr>
                 {%endfor%}
                 <tr>
                     <td></td>
-                    <td style="text-align: right;">รายรับ-รายจ่ายทั้งหมด</td>
-                    <td>{{allEx}} บาท</td>
+                    <td style="text-align: right; color:green;">รายรับ-รายจ่ายทั้งหมด</td>
                     <td>{{allRe}} บาท</td>
+                    <td>{{allEx}} บาท</td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td style="text-align: right;">กำไรสุทธิ</td>
+                    <td style="text-align: right; color: orangered;">กำไรสุทธิ</td>
                     <td>{{profit}} บาท</td>
                     <td></td>
                 </tr>
